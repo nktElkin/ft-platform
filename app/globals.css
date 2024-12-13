@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Open+Sans:ital,wdth,wght@0,75..100,300..800;1,75..100,300..800&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 html, 
 :root, 
@@ -9,13 +11,18 @@ body{
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Open Sans", Helvetica, sans-serif;
+  /* font-family: "Funnel Display", Helvetica, sans-serif; */;
+  font-size: 1rem; /* 16px */
+  line-height: 1.5rem; /* 24px */
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
 }
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --background: #f6f8fa;
+    /* --foreground: #425466; */
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
@@ -39,6 +46,56 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+
+    /* custom colors */
+
+    /* --backgroundColor: #f6f9fc; */
+    --linkColor: var(--accentColor);
+    --linkHoverColor: #0a2540;
+    --buttonColor: var(--accentColor);
+    --buttonHoverColor: #0a2540;
+    --buttonDisabledColor: #cfd7df;
+    --buttonDisabledOpacity: 0.7;
+    --knockoutColor: #fff;
+    --knockoutDisabledColor: #8898aa;
+    --guideSolidColor: rgba(66, 71, 112, 0.06);
+    --guideDashedColor: rgba(66, 71, 112, 0.09);
+    --titleColor: #0a2540;
+    --formFieldDescriptionTextColor: #3f4b66;
+    --inputBackground: #f6f9fc;
+    --checkboxInputBackground: #e7ecf1;
+    --inputPlaceholderColor: #727f96;
+    --inputTextColor: #0a2540;
+    --inputErrorAccentColor: #ff5996;
+    --annotationColor: #8c9eb1;
+    --maskFadeColor: rgba(0, 0, 0, 0.4);
+    --navColor: #0a2540;
+    --navHoverColor: #0a2540;
+    --navHoverOpacity: 0.6;
+    --footerColor: #0a2540;
+    --cardBorderColor: #cbd6e0;
+    --cardBackground: #fff;
+    --subcardBackground: #f6f9fc;
+    --gridSubcardBackground: #fff;
+    --tableIconColor: #8c9eb1;
+    --stripeAccentWhite: #fff;
+    --stripeAccentLight: #e3e7ec;
+    --stripeAccentDark: #0a2540;
+    --bulletColor: #cfd7df;
+    --footnoteTextColor: #4d5b78;
+    --disclaimerTextColor: #707f98;
+    --inlineCodeTextColor: #2c3a57;
+    --inlineCodeBackground: #dce6ee;
+    --socialLogoColor: #c4ccd8;
+    --socialLogoHoverColor: #0a2540;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
   .dark {
     --background: 240 10% 3.9%;
@@ -65,6 +122,14 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 
@@ -76,3 +141,49 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .btn-primary {
+    @apply py-2 px-5 bg-violet-500 text-white font-semibold rounded-full shadow-md hover:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 focus:ring-opacity-75;
+  }
+  .wrapper {
+    @apply p-4 md:pt-4 md:px-5;
+  }
+}
+
+
+/* 
+accent element color: #635bff
+
+accent text color: #5469d4
+main heading color: #0a2540
+main text color: #425466
+small text coler (secondary text): #697386
+
+cta text coler: ffffff
+cta bg color: #675dff
+
+main bg color: #f6f8fa
+sidebar/ header bg: #f7fafc
+
+border color: #e3e8ee
+border color [gradient]:
+
+
+gradient bg 
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        iris: {
+        '100': '#9B79E9',
+'200': '#8960D9',
+'300': '#7749C3'
+        }
+      }
+    }
+  }
+}
+
+stripe.com colors like
+*/

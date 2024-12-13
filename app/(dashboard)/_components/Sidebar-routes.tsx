@@ -1,18 +1,17 @@
 "use client"
 
-import { Compass, Layout } from "lucide-react";
-import { MagnifyingGlassCircleIcon, HomeIcon } from '@heroicons/react/16/solid'
+import { Compass, Globe, Layout, LayoutDashboard } from "lucide-react";
 import { SidebarItem } from "./Sidebar-item";
 
 // example of menu items
 const TestRoutes =[
     {
-        icon: HomeIcon,
+        icon: LayoutDashboard,
         label: "Dashboard",
         href: "/"
     },
     {
-        icon: MagnifyingGlassCircleIcon,
+        icon: Globe,
         label: "Search",
         href: "/search"
     }
@@ -23,8 +22,7 @@ export const SidebarRoutes = () => {
 const routes = TestRoutes;
 
     return (
-        <nav className='flex-1 pt-1' aria-label="Sidebar navigation">
-            <ul>
+            <ul className='flex-1 w-full list-none space-y-2' role="menubar">
                 {routes.map((route) => (
                     <SidebarItem 
                     key={route.href} 
@@ -33,7 +31,6 @@ const routes = TestRoutes;
                     label={route.label}/>
                 ))}
             </ul>
-        </nav>
     );
 }
 

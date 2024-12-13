@@ -3,15 +3,11 @@ import { SidebarRoutes } from "./Sidebar-routes";
 
 export const SidebarContent = () => {
     return(
-        <aside role="complementary"> 
-        <div className='h-full w-full md:flex flex-col md:w-48 justify-items-center fixed bg-gray-50 border-r pt-4'>
-            <div>
-                <Logo/>
-            </div>
-            <div>
-                <SidebarRoutes/>
-            </div>
+        <div className="px-5 py-4 flex flex-col gap-4">
+            <Logo/>
+            <nav role="navigation" aria-label="Sidebar navigation">
+                    <SidebarRoutes/>
+            </nav>
         </div>
-        </aside>
     );
 };

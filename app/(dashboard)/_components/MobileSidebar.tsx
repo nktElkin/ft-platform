@@ -1,4 +1,3 @@
-import { Bars3Icon } from "@heroicons/react/16/solid"
 import {
     Sheet,
     SheetContent,
@@ -9,14 +8,15 @@ import {
   } from "@/components/ui/sheet"
 import { Sidebar } from "./Sidebar"
 import { SidebarContent } from "./Sidebar-content"
+import { AlignJustify } from "lucide-react"
 
 export const MobileSidebarar = () => {
     return(
         <Sheet>
         <SheetTrigger>
-            <Bars3Icon className="size-6 text-stone-800"/>
+            <AlignJustify />
         </SheetTrigger>
-        <SheetContent className="p-0">
+        <SheetContent className="p-0" side='right'>
             <SidebarContent/>
         </SheetContent>
       </Sheet>
