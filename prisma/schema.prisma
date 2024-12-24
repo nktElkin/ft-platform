@@ -1,0 +1,60 @@
+datasource db {
+  url      = env("DATABASE_URL") // db url inser, could be placed in .env file
+  provider = "postgresql" // change the provider
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Account {
+  id        Int      @id @default(autoincrement())
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  email     String   @unique
+  nickname      String //set default one as `user{User.id}`
+  avatarUrl   String?
+  parentAccountId   Int?
+  parentAccount   Account?  @relation("Parent", fields: [parentAccountId], references: [id])
+  childAccounts   Account[] @relation("Parent")
+  counrses  Course[]
+  isTutor  Boolean @default(false) //false -> Srudent, true -> Tutor
+  isRoot          Boolean @default(false) // false -> Student || Tutor, true -> Root
+}
+
+
+model Course {
+    id        String      @id @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    title     String
+    documentUrl  String?
+    authorId  Int
+    categoryId  Int
+    category  Category    @relation(fields: [categoryId], references: [id])
+    author    Account     @relation(fields: [authorId], references: [id])
+    arrachments Attachment[]
+    isPublished Boolean @default(false)
+    }
+
+model Attachment {
+  id        Int      @id @default(autoincrement())
+  altText   String?
+  descriptionShort String?
+  descriptionLong String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  urlPath  String
+  courseId  String
+  course    Course      @relation(fields: [courseId], references: [id], onDelete: Cascade)
+}
+
+model Category{
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    categoryName     String
+    description String?
+    courses   Course[]
+}
