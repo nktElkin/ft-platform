@@ -31,7 +31,7 @@ export const SidebarItem = ({
     };
 
     return (
-        <li>
+        <li className='' role="menuitem">  
             <button
                 // labels
                 aria-current={isActive ? 'page' : undefined}
@@ -40,8 +40,8 @@ export const SidebarItem = ({
                 type="button"
                 onClick={onClick}
                 className={cn(
-                    'flex items-center gap-x-2 w-full text-base font-medium hover:bg-gray-200 transition-all py-2 px-2',
-                    isActive && 'text-xl font-semibold px-1'
+                    'flex justify-center md:justify-normal md:pl-4 items-center w-full text-base font-medium hover:bg-gray-200 transition-all py-3',
+                    isActive && 'font-semibold bg-gray-200 md:border-r-4 border-white'
                 )}
             >
                 <div className="flex items-center gap-x-2" role="presentation">

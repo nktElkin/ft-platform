@@ -2,6 +2,7 @@
 
 import { Compass, Globe, Layout, LayoutDashboard } from "lucide-react";
 import { SidebarItem } from "./Sidebar-item";
+import { usePathname } from "next/navigation";
 
 // example of menu items
 const TestRoutes =[
@@ -17,12 +18,42 @@ const TestRoutes =[
     }
 ];
 
+const StudyRoutes =[
+    {
+        icon: LayoutDashboard,
+        label: "Chapters",
+        href: "/"
+    },
+    {
+        icon: Globe,
+        label: "Search",
+        href: "/search"
+    }
+];
+const TutorRoutes =[
+    {
+        icon: LayoutDashboard,
+        label: "Overview",
+        href: "/tutor/overview"
+    },
+    {
+        icon: Globe,
+        label: "T-Search",
+        href: "/search"
+    }
+];
+
 
 export const SidebarRoutes = () => {
-const routes = TestRoutes;
+    
+    const pathname = usePathname();
+    const isStudyMode = pathname?.startsWith("/study");
+    const isTutorMode = pathname?.startsWith("/tutor");
+    
+    const routes = isTutorMode ? TutorRoutes : isStudyMode ? StudyRoutes : TestRoutes;
 
     return (
-            <ul className='flex-1 w-full list-none space-y-2' role="menubar">
+            <ul className='flex-1 w-full list-none' role="menubar">
                 {routes.map((route) => (
                     <SidebarItem 
                     key={route.href} 

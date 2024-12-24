@@ -10,8 +10,10 @@ const DashboardLayout = ({
         <div className='h-full flex flex-col'>
             <Navbar/>
             <Sidebar/>
-            <main className='h-full md:pl-48 wrapper' role="main">
-                {children}
+            <main className='h-full md:pl-48 *:wrapper' role="main">
+            
+                    {children}
+            
             </main>
     </div>
     );

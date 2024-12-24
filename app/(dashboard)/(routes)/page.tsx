@@ -3,9 +3,9 @@ import {Button} from "@/components/ui/button"
 
 export default function Home() {
   return (
-    <main>
+    <div>
       <p className="text-3xl">something here</p>
       <Button>Click on</Button>
-      </main>
+      </div>
   );
 }

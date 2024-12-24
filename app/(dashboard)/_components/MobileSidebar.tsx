@@ -12,6 +12,7 @@ import { AlignJustify } from "lucide-react"
 
 export const MobileSidebarar = () => {
     return(
+      <div className="md:hidden">
         <Sheet>
         <SheetTrigger>
             <AlignJustify />
@@ -20,5 +21,7 @@ export const MobileSidebarar = () => {
             <SidebarContent/>
         </SheetContent>
       </Sheet>
+
+      </div>
     )
 }
