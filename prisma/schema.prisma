@@ -8,132 +8,14 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// model Course {
-//   id           String      @id @default(auto()) @map("_id") @db.ObjectId
-//   createdAt    DateTime    @default(now())
-//   updatedAt    DateTime    @updatedAt
-//   title        String
-//   documentUrl  String?
-//   authorId     String      @db.ObjectId
-//   categoryId   String      @db.ObjectId
-//   category     Category    @relation(fields: [categoryId], references: [id]) 
-//   author       User     @relation(fields: [authorId], references: [id])
-//   attachments  Attachment[]
-//   isPublished  Boolean     @default(false)
-//   @@map("courses")
-// }
-
-// model Attachment {
-//   id               String   @id @default(auto()) @map("_id") @db.ObjectId
-//   altText          String?  @db.String
-//   descriptionShort String?
-//   descriptionLong  String?
-//   createdAt        DateTime @default(now())
-//   updatedAt        DateTime @updatedAt
-//   urlPath          String
-//   courseId         String   @db.ObjectId
-//   course           Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-//   @@map("attachments")
-// }
-
-// model Category {
-//   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-//   createdAt   DateTime @default(now())
-//   updatedAt   DateTime @updatedAt
-//   categoryName String
-//   description String?
-//   courses     Course[]
-//   @@map("categories")
-// }
-
-
-
-// model Account {
-//   id                 String  @id @default(cuid()) @map("_id") @db.ObjectId
-//   userId             String  @db.ObjectId @map("user_id")
-//   type               String
-//   provider           String
-//   providerAccountId  String  @map("provider_account_id")
-//   refresh_token      String? 
-//   access_token       String? 
-//   expires_at         Int?
-//   token_type         String?
-//   scope              String?
-//   id_token           String? 
-//   session_state      String?
- 
-//   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
-//   @@unique([provider, providerAccountId])
-//   @@map("accounts")
-// }
-
-
- 
-// model Session {
-//   id           String   @id @default(cuid()) @map("_id") @db.ObjectId
-//   sessionToken String   @unique @map("session_token")
-//   userId       String   @db.ObjectId @map("user_id")
-//   expires      DateTime
-//   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
-//   @@map("sessions")
-// }
- 
-// model User {
-//   id            String    @id @default(cuid()) @map("_id") @db.ObjectId
-//   email         String?   @unique
-//   emailVerified DateTime? @map("email_verified")
-//   accounts      Account[]
-//   sessions      Session[]
-//   password        String
-//   createdAt       DateTime   @default(now())
-//   updatedAt       DateTime   @updatedAt
-//   nickname        String     // Implement a nickname generation mechanism in the application logic
-//   avatarUrl       String?
-//   parentAccountId String?    @db.ObjectId
-//   parentAccount   User?   @relation("Parent", fields: [parentAccountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-//   childAccounts   User[]  @relation("Parent")
-//   courses         Course[]
-//   isTutor         Boolean    @default(false) // false -> Student, true -> Tutor
-//   isRoot          Boolean    @default(false) // false -> Student || Tutor, true -> Root
- 
-//   @@map("users")
-// }
- 
-// model VerificationToken {
-//   identifier String  @id @default(cuid()) @map("_id") @db.ObjectId
-//   token      String
-//   expires    DateTime
- 
-//   @@unique([identifier, token])
-//   @@map("verification_tokens")
-// }
-
-
-// model Account {
-//   id              String     @id @default(auto())  @map("_id") @db.ObjectId
-//   password        String
-//   createdAt       DateTime   @default(now())
-//   updatedAt       DateTime   @updatedAt
-//   email           String     @unique
-//   nickname        String     // Implement a nickname generation mechanism in the application logic
-//   avatarUrl       String?
-//   parentAccountId String?    @db.ObjectId
-//   parentAccount   Account?   @relation("Parent", fields: [parentAccountId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-//   childAccounts   Account[]  @relation("Parent")
-//   courses         Course[]
-//   isTutor         Boolean    @default(false) // false -> Student, true -> Tutor
-//   isRoot          Boolean    @default(false) // false -> Student || Tutor, true -> Root
-// }
-
-
+// addtional enum for identifying user roles
 enum UserRole {
   ROOT
   TUTOR
   STUDENT
 }
 
+// basic models from the next-auth + prisma example, updated for mongodb
 model User {
   id            String          @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
@@ -141,6 +23,7 @@ model User {
   hashedPassword String?
   emailVerified DateTime?
   image         String?
+  
   accounts      Account[]
   sessions      Session[]
   role          UserRole?       @default(STUDENT)
@@ -149,6 +32,13 @@ model User {
  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  
+  // relations with other models
+  parentUserId String?      @db.ObjectId
+  parentUser   User?        @relation("Parent", fields: [parentUserId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  childUser   User[]       @relation("Parent")
+  courses     Course[]
+
 }
  
 model Account {
@@ -208,3 +98,45 @@ model Authenticator {
  
   @@unique([userId, credentialID])
 }
+
+
+// special models design for current project
+
+model Course {
+  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  title        String
+  documentUrl  String?
+  authorId     String      @db.ObjectId
+  categoryId   String      @db.ObjectId
+  category     Category    @relation(fields: [categoryId], references: [id]) 
+  author       User     @relation(fields: [authorId], references: [id])
+  attachments  Attachment[]
+  isPublished  Boolean     @default(false)
+  @@map("courses")
+}
+
+model Attachment {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  altText          String?  @db.String
+  descriptionShort String?
+  descriptionLong  String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  urlPath          String
+  courseId         String   @db.ObjectId
+  course           Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  @@map("attachments")
+}
+
+model Category {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  categoryName String  @unique
+  description String?
+  courses     Course[]
+  @@map("categories")
+}
+
