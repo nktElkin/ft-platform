@@ -40,7 +40,8 @@ export default function CreateCoursePage() {
     // 2. Define a submit handler.
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            // sending the created one to the api as api/course/{values}
+            const response = await fetch("/api/courses", { method: "POST", body: JSON.stringify(values) });
+            if (!response.ok) throw new Error("Failed to create course");
             toast.success("Success", {
                 cancel: {
                     label: 'Undo',
@@ -50,6 +51,8 @@ export default function CreateCoursePage() {
                     actionButtonStyle: {},
                 }
             });
+            const responseData = await response.json();
+            router.push(`/tutor/overview/${responseData.course.id}`);
             // // router.push(`/tutor/overview/{response.data.id}`);
         } catch (error) {
             // Do something with the form values.
@@ -62,7 +65,7 @@ export default function CreateCoursePage() {
 
     return (
         <div className="flex flex-col w-full items-center h-full gap-y-10">
-            <div className="">
+            <div className="flex justify-start">
                 <div className="">
                     <h1 className="">New course</h1>
                     <p className="">It's easy to create new course, we'll help you. <br /> Just fill out a form. Let's do it!</p>
