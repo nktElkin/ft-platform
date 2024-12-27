@@ -52,8 +52,8 @@ export default function CreateCoursePage() {
                 }
             });
             const responseData = await response.json();
+            if(!responseData.course) throw new Error("Failed to create course");
             router.push(`/tutor/overview/${responseData.course.id}`);
-            // // router.push(`/tutor/overview/{response.data.id}`);
         } catch (error) {
             // Do something with the form values.
             // ✅ This will be type-safe and validated.

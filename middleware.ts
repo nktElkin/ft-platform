@@ -12,10 +12,23 @@ import type { NextRequest } from "next/server";
 // }
 
 
-const protectedRoutes = ["/tutor"]; //procred routes
+const protectedRoutes = ["/tutor"]; //PROTECTED ROUTES
 
 export default async function middleware(request: NextRequest) {
   const session = await auth();
+
+  // Handle CORS
+  // if (request.method === 'OPTIONS') {
+  //   const response = new NextResponse(null, {
+  //     status: 200,
+  //     headers: {
+  //       'Access-Control-Allow-Origin': '*',
+  //       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  //       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  //     },
+  //   })
+  //   return response
+  // }
 
   const isProtected = protectedRoutes.some((route) =>
     request.nextUrl.pathname.startsWith(route)

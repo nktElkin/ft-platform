@@ -1,8 +1,10 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
+import { debug } from "console";
 import { NextResponse } from "next/server";
+import { toast } from "sonner";
 
-export async function POST (req: Request, res: Response) {
+export async function POST (req: Request) {
     try{
         const session = await auth();
         if (!session) return new NextResponse("Unauthorized", { status: 401 });
@@ -14,13 +16,11 @@ export async function POST (req: Request, res: Response) {
                 email: session?.user?.email || "",
             }
         });
-        console.log("user: ", user);
         const category = await db.category.findUnique({
             where: {
                 categoryName: "Uncategorized"
             }
         });
-        console.log("category: ", category);
         if (!user) return new NextResponse("User not found", { status: 401 });
         if (user?.role === "STUDENT") return new NextResponse("Permission denied", { status: 401 });
 
@@ -41,7 +41,7 @@ export async function POST (req: Request, res: Response) {
                 },
               }
        });
-       return NextResponse.json({course});
+    return NextResponse.json({course}, { status: 200 });
     } catch (error) {
         console.error('[CREATE-COURSE]',error);
         return new NextResponse("Failed to create course", { status: 500 });
@@ -50,7 +50,11 @@ export async function POST (req: Request, res: Response) {
 
 // export async function GET (req: Request, res: Response) {
 //     try{
-//         const courses = await db.course.findMany();
+//         const courses = await db.course.findMany({
+//             where: {
+//                 isPublished: true
+//             }
+//         });
 //         return new NextResponse({courses});
 //     } catch (error) {
 //         console.error(error);
