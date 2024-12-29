@@ -2,13 +2,13 @@ import { auth } from "@/auth";
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
-export async function PATCH(req : Request, { params }: { params: { courseId: string } }) {
+export async function PATCH(req : Request, { params }: { params: { courseId: string | string[] } }) {
     try{
         const session = await auth();
         if (!session) return new NextResponse("Unauthorized", { status: 401 });
-        const courseId =  params.courseId[0];
+        // const courseId = params.courseId[0];
+        const courseId = Array.isArray(params.courseId) ? params.courseId[0] : params.courseId;
         if (!courseId) return NextResponse.json({ message: '[COURSE-PATCH] Invalid course id' }, { status: 400 });
-        
         const values = await req.json();
         if (!values) return NextResponse.json({ message: '[COURSE-PATCH] Invalid request body' }, { status: 400 });
         //update data
@@ -18,6 +18,7 @@ export async function PATCH(req : Request, { params }: { params: { courseId: str
           },
           data: {
             title: values?.title,
+            description: values?.description,
             updatedAt: new Date(),
             documentUrl: values?.documentUrl,
             authorId: values?.authorId,

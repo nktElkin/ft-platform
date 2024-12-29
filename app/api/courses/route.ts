@@ -7,7 +7,7 @@ import { toast } from "sonner";
 export async function POST (req: Request) {
     try{
         const session = await auth();
-        if (!session) return new NextResponse("Unauthorized", { status: 401 });
+        if (!session) return new NextResponse("Unauthorized", { status: 403 });
 
 
         // find user via filter
@@ -21,8 +21,8 @@ export async function POST (req: Request) {
                 categoryName: "Uncategorized"
             }
         });
-        if (!user) return new NextResponse("User not found", { status: 401 });
-        if (user?.role === "STUDENT") return new NextResponse("Permission denied", { status: 401 });
+        if (!user) return new NextResponse("User not found", { status: 404 });
+        if (user?.role === "STUDENT") return new NextResponse("Permission denied", { status: 403 });
 
 
        const {title} = await req.json(); 
@@ -41,7 +41,8 @@ export async function POST (req: Request) {
                 },
               }
        });
-    return NextResponse.json({course}, { status: 200 });
+    return NextResponse.json({course}, { status: 201 });
+    // return NextResponse.json({course}, { status: 201 });
     } catch (error) {
         console.error('[CREATE-COURSE]',error);
         return new NextResponse("Failed to create course", { status: 500 });

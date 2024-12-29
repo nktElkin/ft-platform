@@ -41,6 +41,8 @@ model User {
 
 }
  
+
+// Auth modeles
 model Account {
   id                String  @id @default(auto()) @map("_id") @db.ObjectId
   userId            String  @db.ObjectId
@@ -100,13 +102,13 @@ model Authenticator {
 }
 
 
-// special models design for current project
-
+// specific models design for current project
 model Course {
   id           String      @id @default(auto()) @map("_id") @db.ObjectId
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
   title        String
+  description  String?  
   documentUrl  String?
   authorId     String      @db.ObjectId
   categoryId   String      @db.ObjectId
@@ -114,9 +116,11 @@ model Course {
   author       User     @relation(fields: [authorId], references: [id])
   attachments  Attachment[]
   isPublished  Boolean     @default(false)
+  // courseModules CourseModule[]
   @@map("courses")
 }
 
+// model Attachment presents the array of Url for the CourseModule
 model Attachment {
   id               String   @id @default(auto()) @map("_id") @db.ObjectId
   altText          String?  @db.String
@@ -140,3 +144,21 @@ model Category {
   @@map("categories")
 }
 
+
+// model CourseModule{
+//   id           String      @id @default(auto()) @map("_id") @db.ObjectId
+//   createdAt    DateTime    @default(now())
+//   updatedAt    DateTime    @updatedAt
+//   title        String
+//   content  String?
+//   atachments  Attachment[]
+//   isPublished  Boolean     @default(false)
+
+//   courseId     String      @db.ObjectId
+//   course       Course      @relation(fields: [courseId], references: [id], onDelete: Cascade)
+//   @@map("courseModules")
+// }
+
+
+// TODO: remove attachments in course -> move to CourseModule
+// TODO: documentUrl in Course -> courseModules[] 

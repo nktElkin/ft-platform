@@ -6,7 +6,7 @@ import { auth } from "@/auth";
 
 export default async function Home() {
   const session = await auth();
-  if (session) console.log(session)
+  if (session) console.log('User logged')
   return (
     <div>
       <p className="text-3xl">something here</p>

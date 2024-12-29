@@ -14,6 +14,7 @@ export const MobileSidebarar = () => {
     return(
       <div className="md:hidden">
         <Sheet>
+          <SheetTitle className="hidden">Menu</SheetTitle>
         <SheetTrigger>
             <AlignJustify />
         </SheetTrigger>

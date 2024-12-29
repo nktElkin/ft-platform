@@ -1,4 +1,3 @@
-import { UserCard } from "@/components/ui/user-card";
 import { Logo } from "./Logo";
 import { SidebarRoutes } from "./Sidebar-routes";
 import { auth } from "@/auth";
