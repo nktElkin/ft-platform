@@ -1,6 +1,7 @@
-import EditCategoryForm from "../../_components/edit-category-form";
-import EditDescriptionForm from "../../_components/edit-description-form";
-import EditTitleForm from "../../_components/edit-title-form";
+import EditCategoryForm from "./edit-category-form";
+import EditDescriptionForm from "./edit-description-form";
+import EditTitleForm from "./edit-title-form";
+import UploadMediaForm from "./upload-media-form";
 
 
 interface CourseCreationFormProps {
@@ -8,10 +9,10 @@ interface CourseCreationFormProps {
   courseId: string,
   categories: {label: string; value: string}[];
   defaultCategory : string
+  courseWallpaperIsValid?: boolean
 }
 
-const CourseCreationForm = ({ initials, courseId, categories, defaultCategory }: CourseCreationFormProps) => {
-
+const  CourseCreationForm = ({ initials, courseId, categories, defaultCategory, courseWallpaperIsValid }: CourseCreationFormProps) => {
 
   return ( 
     <section className="flex flex-col w-full gap-6">
@@ -20,7 +21,9 @@ const CourseCreationForm = ({ initials, courseId, categories, defaultCategory }:
     <EditDescriptionForm initials={initials} courseId={courseId} />
     <span className="border-solid border-2 border-grey-100"/>
     <EditCategoryForm initials={initials} courseId={courseId} categories={categories} defaultCategory={defaultCategory}/>
-    </section>  
+    <span className="border-solid border-2 border-grey-100"/>
+    <UploadMediaForm initials={initials} courseId={courseId} isValidImageUrl={courseWallpaperIsValid}/>
+    </section>
   )
 }
 

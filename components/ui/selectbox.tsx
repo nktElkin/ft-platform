@@ -56,7 +56,7 @@ export function SelectBox({list, value, onChange, defaultValue, listTheme = ''}:
                   key={listItem.value}
                   value={listItem.value}
                   onSelect={() => {
-                    onChange(listItem.value === value ? '' : listItem.value)
+                    onChange && onChange(listItem.value === value ? '' : listItem.value)
                     setOpen(false)
                   }}
                 >

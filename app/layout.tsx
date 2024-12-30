@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { EdgeStoreProvider } from "@/lib/edgestore";
 
 
 const geistSans = localFont({
@@ -32,10 +33,12 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-       
+        <>
+       <EdgeStoreProvider>
           {children}
+        </EdgeStoreProvider>
           <Toaster/>
-          
+        </>
         
       </body> 
     </html>

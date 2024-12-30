@@ -4,26 +4,23 @@ import { Button } from "@/components/ui/button"
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
-    FormLabel,
-    FormMessage,
 } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { useState } from "react";
 import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
-import { SelectBox } from "@/components/ui/selectbox";
+import InputCover from "@/components/ui/input-cover";
 
 const formSchema = z.object({
-    categoryId: z.string().min(2)
+    description: z.string().min(2, {
+        message: "Description must be at least 2 characters",
+    })
 })
 
 type FormValues = z.infer<typeof formSchema>
@@ -31,11 +28,9 @@ type FormValues = z.infer<typeof formSchema>
 interface CourseCreationFormProps {
     initials: any,
     courseId: string,
-    categories: {label: string; value: string}[];
-    defaultCategory : string
   }
 
-const EditCategoryForm = ({initials, courseId, categories, defaultCategory}: CourseCreationFormProps) => {
+const EditDescriptionForm = ({initials, courseId}: CourseCreationFormProps) => {
     const [isEditigin, setIsEditing] = useState(false);
     const router = useRouter();
 
@@ -46,15 +41,13 @@ const EditCategoryForm = ({initials, courseId, categories, defaultCategory}: Cou
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            categoryId: initials?.categotyId || '',
+            description: initials?.description || '',
         }
     })
-
     const { isSubmitting, isValid } = form.formState;
 
     const onSubmit = async (values: FormValues) => {
         values = { ...initials, ...values }
-        console.log(values)
         try {
             const response = await fetch(`/api/courses/${courseId}`, { method: "PATCH", body: JSON.stringify(values) });
             if (!response.ok) {
@@ -70,34 +63,25 @@ const EditCategoryForm = ({initials, courseId, categories, defaultCategory}: Cou
             toast.error('Fild uattenpt')
             console.error(error)
         }
+        editMode();
         router.refresh();
     }
 
-console.log()
 
     return (
         <div className="flex flex-col space-y-7">
-            <Label className="">Course category</Label>
-            {!isEditigin &&
-                <>
-                    <div aria-roledescription="field value"
-                        className="overflow-hidden h-9 flex w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm md:text-sm">
-                        {defaultCategory || 'Not selected category yet'}
-                    </div>
-                    <Button className="w-fit" type="submit" onClick={editMode}>Edit</Button>
-                </>
-            }
+            <Label className="">Course Desctiption</Label>
+            {!isEditigin && <InputCover value={initials.description || "No description yet"} onToggle={editMode} controllerState={isEditigin} inputVariant="text-area"/>}
             {isEditigin &&
-            <Form {...form}>
+                <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                         <FormField
                             control={form.control}
-                            name="categoryId"
+                            name="description"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormControl>
-                                    <SelectBox list={categories} {...field} defaultValue={defaultCategory}/>
-                                        {/* <Textarea placeholder="Enter course description" {...field}  disabled={isSubmitting}/> */}
+                                        <Textarea placeholder="Enter course description" {...field}  disabled={isSubmitting}/>
                                         {/* <Input placeholder="Enter course description" {...field} disabled={isSubmitting} /> */}
                                     </FormControl>
                                 </FormItem>
@@ -113,4 +97,4 @@ console.log()
     );
 }
 
-export default EditCategoryForm;
+export default EditDescriptionForm;

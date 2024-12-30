@@ -20,7 +20,7 @@ export async function PATCH(req : Request, { params }: { params: { courseId: str
             title: values?.title,
             description: values?.description,
             updatedAt: new Date(),
-            documentUrl: values?.documentUrl,
+            wallpaperUrl: values?.wallpaperUrl,
             authorId: values?.authorId,
             categoryId: values?.categoryId,
             isPublished: values?.isPublished,

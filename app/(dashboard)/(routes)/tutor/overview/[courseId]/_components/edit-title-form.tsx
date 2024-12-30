@@ -20,6 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
+import InputCover from "@/components/ui/input-cover";
 
 const formSchema = z.object({
     title: z.string().min(2, {
@@ -68,21 +69,16 @@ const EditTitleForm = ({initials, courseId}: CourseCreationFormProps) => {
             toast.error('Fild uattenpt')
             console.error(error)
         }
+        editMode();
         router.refresh();
     }
 
 
     return (
-        <div className="flex flex-col space-y-7">
+        <div className="flex flex-col space-y-8">
             <Label className="">Course Title</Label>
             {!isEditigin &&
-                <>
-                    <div aria-roledescription="field value"
-                        className="overflow-hidden h-9 flex w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm md:text-sm">
-                        {initials.title}
-                    </div>
-                    <Button className="w-fit" type="submit" onClick={editMode}>Edit</Button>
-                </>
+                <InputCover value={initials.title} onToggle={editMode} controllerState={isEditigin} inputVariant="input"/>
             }
             {isEditigin &&
                 <Form {...form}>
