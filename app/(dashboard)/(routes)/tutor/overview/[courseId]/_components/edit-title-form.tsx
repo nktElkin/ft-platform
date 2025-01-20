@@ -4,11 +4,8 @@ import { Button } from "@/components/ui/button"
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
-    FormLabel,
-    FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { z } from "zod"
@@ -16,8 +13,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { useState } from "react";
 import { toast } from "sonner";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
 import InputCover from "@/components/ui/input-cover";
@@ -53,7 +48,7 @@ const EditTitleForm = ({initials, courseId}: CourseCreationFormProps) => {
 
     const onSubmit = async (values: FormValues) => {
         values = { ...initials, ...values }
-        console.log(values)
+        // console.log(values)
         try {
             const response = await fetch(`/api/courses/${courseId}`, { method: "PATCH", body: JSON.stringify(values) });
             if (!response.ok) {
@@ -62,12 +57,12 @@ const EditTitleForm = ({initials, courseId}: CourseCreationFormProps) => {
                     ? "Course not found. Please check the course ID."
                     : `Failed to update course: ${error}`);
             }
-            const responseData = await response.json();
-            console.log(responseData)
+            // const responseData = await response.json();
+            // console.log(responseData)
             toast.success("Successfully aplied");
         } catch (error) {
             toast.error('Fild uattenpt')
-            console.error(error)
+            // console.error(error)
         }
         editMode();
         router.refresh();
