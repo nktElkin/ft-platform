@@ -52,8 +52,8 @@ export default function CreateCoursePage() {
                 }
             });
             const responseData = await response.json();
-            if(!responseData.course) throw new Error("Failed to create course");
-            router.push(`/tutor/overview/${responseData.course.id}`);
+            if (!responseData.course) throw new Error("Failed to create course");
+            router.push(`/tutor/edit-course/${responseData.course.id}`);
         } catch (error) {
             // Do something with the form values.
             // ✅ This will be type-safe and validated.
@@ -64,40 +64,40 @@ export default function CreateCoursePage() {
     }
 
     return (
-        <div className="flex flex-col w-full items-center h-full gap-y-10">
-            <div className="flex justify-start">
-                <div className="">
-                    <h1 className="">New course</h1>
-                    <p className="">It's easy to create new course, we'll help you. <br /> Just fill out a form. Let's do it!</p>
-                </div>
+        <div className="flex flex-col h-full gap-y-10 mx-auto items-center  *:w-full max-w-xl">
+            <div className="">
+                <h1 className="">New course</h1>
+                <p className="">It's easy to create new course, we'll help you. <br /> Just fill out a form. Let's do it!</p>
             </div>
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:w-1/2">
-                    <FormField
-                        control={form.control}
-                        name="title"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Course title</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="My new course title" {...field} disabled={isSubmitting} />
-                                </FormControl>
-                                <FormDescription>
-                                    This is the public information.
-                                </FormDescription>
-                                <FormMessage />
-                            </FormItem>
+            <div>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                        <FormField
+                            control={form.control}
+                            name="title"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Course title</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="My new course title" {...field} disabled={isSubmitting} />
+                                    </FormControl>
+                                    <FormDescription>
+                                        This information is public. The main name of course.
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
 
-                        )}
-                    />
-                    <div className="flex gap-x-4">
-                        <Link href="/">
-                            <Button type="button" variant="secondary">Back</Button>
-                        </Link>
-                        <Button type="submit" className="disable" disabled={!isValid || isSubmitting}>Submit</Button>
-                    </div>
-                </form>
-            </Form>
+                            )}
+                        />
+                        <div className="flex gap-x-4">
+                            <Link href="/">
+                                <Button type="button" variant="secondary">Back</Button>
+                            </Link>
+                            <Button type="submit" className="disable" disabled={!isValid || isSubmitting}>Submit</Button>
+                        </div>
+                    </form>
+                </Form>
+            </div>
         </div>
 
     );
