@@ -20,10 +20,6 @@ const RemoveCourseModuleBtn = ({moduleId, courseId}:RemoveCourseModuleBtnProps) 
         const confirmed = window.confirm('Are you sure you want to delete this module?');
         if (!confirmed) return;
 
-        
-
-    
-
         try {
             setIsLoading(true);
             const response = await fetch(`/api/courses/${courseId}/courseModules/${moduleId}`, {
@@ -47,7 +43,7 @@ const RemoveCourseModuleBtn = ({moduleId, courseId}:RemoveCourseModuleBtnProps) 
     }
 
     return (
-        <button type="button"  onClick={handleDelete} className="font-bold absolute top-2 right-5 delete-btn">&times;</button>
+        <button type="button" aria-description="Delete course button" onClick={handleDelete} className="font-bold absolute top-0.5 right-1 delete-btn px-3 py-2">&times;</button>
     );
 }
  

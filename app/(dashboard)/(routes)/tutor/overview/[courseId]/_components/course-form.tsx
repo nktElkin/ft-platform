@@ -2,10 +2,6 @@ import EditCategoryForm from "./edit-category-form";
 import EditDescriptionForm from "./edit-description-form";
 import EditTitleForm from "./edit-title-form";
 import UploadMediaForm from "./upload-media-form";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-
-
-
 
 interface CourseCreationFormProps {
   initials: any,

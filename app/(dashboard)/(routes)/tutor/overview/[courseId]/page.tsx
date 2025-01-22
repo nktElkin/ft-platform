@@ -7,23 +7,17 @@ import { imageUrlIsValid } from "@/lib/utils";
 import PreviewCard from "@/components/ui/preview-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import CourseModuleCreationForm from "./_components/courseModule-form";
+import DraggableTable from "./_components/draggable-table";
 
 // import { describe } from "node:test";
 
-interface PageProps {
-    params: {
-        courseId: string;
-    }
-}
 
 
-
-
-const CourseIdPage = async ({ params }: PageProps) => {
+const CourseIdPage = async ({ params }: {params: Promise<{courseId: string}>}) => {
     const session = await auth();
 
 
-    const id = params?.courseId;
+    const id = (await params)?.courseId;
 
     const currentUser = await db.user.findUnique({ where: { email: session?.user?.email || "" } });
     const course = await db.course.findUnique({ where: { id } });
@@ -60,10 +54,11 @@ const CourseIdPage = async ({ params }: PageProps) => {
                     <PreviewCard object={course} variant="course" />
                     <br />
                     <h3>Course modules</h3>
-                    <div className="flex flex-col gap-4">
+                    <DraggableTable objects={modules} courseId={course?.id}/>
+                    {/* <div className="flex flex-col gap-4">
                         {[modules].length ? modules.map((module) =>
                             <PreviewCard object={module} variant="module" />) : ''}
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </>

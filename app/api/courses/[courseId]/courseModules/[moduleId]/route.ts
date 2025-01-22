@@ -19,8 +19,8 @@ export async function DELETE(
         if (!user) return new NextResponse("User not found", { status: 404 });
         if (user?.role === "STUDENT") return new NextResponse("Permission denied", { status: 403 });
         
-        const courseId = await params.courseId;
-        const moduleId = await params.moduleId;
+        const courseId =  params.courseId;
+        const moduleId =  params.moduleId;
      
         
         const actionCourseModule = await db.courseModule.findFirst({
@@ -30,8 +30,7 @@ export async function DELETE(
             }
         });
         if (!actionCourseModule) return new NextResponse("Course module not found", { status: 404 });
-        const actionModuleIndex = actionCourseModule.index;
-
+       
         const deleteCourseModule = await db.courseModule.delete({
             where: {
                 id: moduleId,
@@ -41,26 +40,21 @@ export async function DELETE(
 
         //updating course and other modules index 
         if (deleteCourseModule) {
+            //updating other moduels indexes
+            await db.courseModule.updateMany({
+                where:{
+                    courseId,
+                    index:{
+                        gt: actionCourseModule.index
+                    }
+                },
+                data: {
+                    index: {
+                        decrement: 1
+                    }
+                }
+            });
 
-            // //updating next moduels index
-            // const courseModules = await db.courseModule.findMany({
-            //     where: {
-            //         courseId: courseId
-            //     },
-            //     orderBy: {
-            //         index: 'asc'
-            //     }
-            // });
-            // for (let i = actionModuleIndex; i < courseModules.length; i++) {
-            //     await db.courseModule.update({
-            //         where: {
-            //             id: courseModules[i + 1].id
-            //         },
-            //         data: {
-            //             index: i
-            //         }
-            //     });
-            // }
 
             //updating course updatedAt
             await db.course.update({
