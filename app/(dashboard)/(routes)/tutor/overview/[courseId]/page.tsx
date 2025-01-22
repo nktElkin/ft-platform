@@ -51,10 +51,10 @@ const CourseIdPage = async ({ params }: {params: Promise<{courseId: string}>}) =
                 </Tabs>
                 <div className="hidden md:block">
                     <h3>Course</h3>
-                    <PreviewCard object={course} variant="course" />
+                    <PreviewCard object={course} variant="course" courseCategoty={defaultCategory ? defaultCategory.categoryName : ''} isPublished={course?.isPublished}/>
                     <br />
                     <h3>Course modules</h3>
-                    <DraggableTable objects={modules} courseId={course?.id}/>
+                    <DraggableTable objects={modules} courseId={course?.id} />
                     {/* <div className="flex flex-col gap-4">
                         {[modules].length ? modules.map((module) =>
                             <PreviewCard object={module} variant="module" />) : ''}
