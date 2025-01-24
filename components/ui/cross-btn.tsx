@@ -1,5 +1,6 @@
 'use client';
 
+import { CircleX } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -7,10 +8,11 @@ import { toast } from "sonner";
 interface RemoveCourseModuleBtnProps{
     moduleId: string,
     courseId: string
+    absolute?: boolean
 }
 
 
-const RemoveCourseModuleBtn = ({moduleId, courseId}:RemoveCourseModuleBtnProps) => {
+const RemoveCourseModuleBtn = ({moduleId, courseId, absolute}:RemoveCourseModuleBtnProps) => {
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
     
@@ -43,7 +45,7 @@ const RemoveCourseModuleBtn = ({moduleId, courseId}:RemoveCourseModuleBtnProps) 
     }
 
     return (
-        <button type="button" aria-description="Delete course button" onClick={handleDelete} className="font-bold absolute top-0.5 right-1 delete-btn px-3 py-2">&times;</button>
+        <button type="button" aria-description="Delete course button" onClick={handleDelete} className={`font-bold ${absolute && 'absolute'} px-3 py-2`}><CircleX/></button>
     );
 }
  

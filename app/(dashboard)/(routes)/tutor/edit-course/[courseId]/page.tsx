@@ -34,31 +34,30 @@ const CourseIdPage = async ({ params }: {params: Promise<{courseId: string}>}) =
         <>
             <h1>Let's edit your course</h1>
             <div className="md:grid grid-cols-2 gap-4">
-                <Tabs defaultValue="course-info">
+                <Tabs defaultValue="course">
                     <TabsList className="mb-3">
-                        <TabsTrigger value="course-info">Info</TabsTrigger>
-                        <TabsTrigger value="course-mudule">Module</TabsTrigger>
+                        <TabsTrigger value="course">Course</TabsTrigger>
+                        <TabsTrigger value="mudule">Module</TabsTrigger>
                     </TabsList>
-                    <TabsContent value="course-info">
+                    <TabsContent value="course">
                         <CourseCreationForm initials={course} courseId={course?.id} categories={categories.map((item) => ({
                             label: item?.categoryName,
                             value: item?.id,
                         }))} defaultCategory={defaultCategory ? defaultCategory.categoryName : ''} courseWallpaperIsValid={courseWallpaperIsValid} />
                     </TabsContent>
-                    <TabsContent value="course-mudule" className="flex flex-col w-full gap-6">
+                    <TabsContent value="mudule" className="flex flex-col w-full gap-6">
                         <CourseModuleCreationForm courseId={course?.id}/>
                     </TabsContent>
                 </Tabs>
                 <div className="hidden md:block">
                     <h3>Course</h3>
-                    <PreviewCard object={course} variant="course" courseCategoty={defaultCategory ? defaultCategory.categoryName : ''} isPublished={course?.isPublished}/>
-                    <br />
-                    <h3>Course modules</h3>
-                    <DraggableTable objects={modules} courseId={course?.id} />
-                    {/* <div className="flex flex-col gap-4">
-                        {[modules].length ? modules.map((module) =>
-                            <PreviewCard object={module} variant="module" />) : ''}
-                    </div> */}
+                    <PreviewCard object={course} variant="course" courseCategory={defaultCategory ? defaultCategory.categoryName : ''}/>
+                    {modules.length ? 
+                    <>
+                        <br />
+                        <h3>Course modules</h3>
+                        <DraggableTable objects={modules} courseId={course?.id} />
+                    </> : ''}
                 </div>
             </div>
         </>

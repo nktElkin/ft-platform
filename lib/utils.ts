@@ -1,6 +1,8 @@
 
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { db } from "./db"
+import { auth } from "@/auth"
 
 
 export function cn(...inputs: ClassValue[]) {
@@ -15,3 +17,16 @@ export async function imageUrlIsValid(url: string) {
       return false
     }}).catch(() => { return false})
   }
+
+export async function getSession(){
+  const session = await auth();
+  const currentUser = await db.user.findUnique({ where: { email: session?.user?.email || "" } });
+  return {session, currentUser}
+}
+
+export async function hasPersmissionToEdit(creatorId: string | null){
+  const {currentUser} = await getSession();
+  if (currentUser?.role === 'ROOT') return true;
+  if (currentUser?.role === 'TUTOR' && currentUser?.id === creatorId) return true;
+  return false;
+}

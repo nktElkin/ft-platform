@@ -61,7 +61,7 @@ const DraggableTable = ({ objects, courseId }: DraggableTableProps) => {
                         onDrop={(e) => handleDrop(e, obj)}
                         key={obj?.id}>
                         <td className="">
-                            <PreviewCard object={obj} variant="module" isPublished={obj} />
+                                <PreviewCard object={obj} variant="module" courseId={courseId ? courseId : ''} hover={true}/>
                         </td>
                     </tr>) : ''
                 }
