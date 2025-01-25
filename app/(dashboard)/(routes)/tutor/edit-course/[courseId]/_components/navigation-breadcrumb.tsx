@@ -31,45 +31,49 @@ import { useState } from "react";
 import { useMediaQuery } from 'react-responsive';
 
 const getPathWithNext = (pathname: string, matchPattern: string): string => {
+    if (matchPattern === 'overview' && (pathname.includes('tutor') || pathname.includes('student'))) return '/overview'
     const parts = pathname.split('/').filter(Boolean);
     const matchIndex = parts.findIndex(part => part.includes(matchPattern));
-    if (matchIndex === -1) return '/';
+
+    // If no matches, return an empty string
+    if (matchIndex === -1) return '';
 
     // Include the next element if it exists
     const pathParts = parts.slice(0, matchIndex + 2);
     return '/' + pathParts.join('/');
 };
 
-interface NavigationBreadcrumbsProps {
-    course: any;
-    module: any;
+interface ItemInterface {
+    href: string,
+    label: string
 }
 
-const NavigationBreadcrumbs = ({ course, module }: NavigationBreadcrumbsProps) => {
+const setItemsArray = (overview: string, course: string, module: string): ItemInterface[] => {
+    const items: ItemInterface[] = [];
+    items.push({ href: "/", label: "Home" });
+    if (overview) items.push({ href: overview, label: "Overview" });
+    if (course) items.push({ href: course, label: "Course" });
+    if (module) items.push({ href: module, label: "Module" });
+    return items;
+}
+
+const NavigationBreadcrumbs = () => {
     const [open, setOpen] = useState(false)
     const isMobile = useMediaQuery({ maxWidth: 640 });
     const pathname = usePathname()
-    let coursePathMatch = pathname.match(/(.*?course)/);
-    let modulePathMatch = pathname.match(/(.*?module)/);
 
-    console.log(getPathWithNext(pathname, 'course'));
-    const items = [
-        { href: "#", label: "Home" },
-        { href: "#", label: "Documentation" },
-        { href: "#", label: "Building Your Application" },
-        { href: "#", label: "Data Fetching" },
-        { label: "Caching and Revalidating" },
-    ]
+    const items: ItemInterface[] = setItemsArray(getPathWithNext(pathname, 'overview'), getPathWithNext(pathname, 'course'), getPathWithNext(pathname, 'module'));
+    console.log(items);
     const ITEMS_TO_DISPLAY = 3;
 
     return (<>
 
         <Breadcrumb>
             <BreadcrumbList>
-                <BreadcrumbItem>
+                <BreadcrumbItem className="hover:underline hover:text-zinc-700">
                     <BreadcrumbLink href={items[0].href}>{items[0].label}</BreadcrumbLink>
                 </BreadcrumbItem>
-                <BreadcrumbSeparator />
+                <BreadcrumbSeparator/>
                 {items.length > ITEMS_TO_DISPLAY ? (
                     <>
                         <BreadcrumbItem>
@@ -81,7 +85,7 @@ const NavigationBreadcrumbs = ({ course, module }: NavigationBreadcrumbsProps) =
                                     >
                                         <BreadcrumbEllipsis className="h-4 w-4" />
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="start">
+                                    <DropdownMenuContent className="bg-inherit" align="start">
                                         {items.slice(1, -2).map((item, index) => (
                                             <DropdownMenuItem key={index}>
                                                 <Link href={item.href ? item.href : "#"}>
@@ -98,9 +102,9 @@ const NavigationBreadcrumbs = ({ course, module }: NavigationBreadcrumbsProps) =
                                     </DrawerTrigger>
                                     <DrawerContent>
                                         <DrawerHeader className="text-left">
-                                            <DrawerTitle>Navigate to</DrawerTitle>
+                                            <DrawerTitle>Go to</DrawerTitle>
                                             <DrawerDescription>
-                                                Select a page to navigate to.
+                                                Select a page
                                             </DrawerDescription>
                                         </DrawerHeader>
                                         <div className="grid gap-1 px-4">
@@ -126,8 +130,8 @@ const NavigationBreadcrumbs = ({ course, module }: NavigationBreadcrumbsProps) =
                         <BreadcrumbSeparator />
                     </>
                 ) : null}
-                {items.slice(-ITEMS_TO_DISPLAY + 1).map((item, index) => (
-                    <BreadcrumbItem key={index}>
+                {items.length > 1 ? items.slice(-ITEMS_TO_DISPLAY + 1).map((item, index) => (
+                    <BreadcrumbItem className={`hover:underline hover:text-zinc-700 ${item?.href === pathname ? 'text-zinc-700' : ''}`} key={index}>
                         {item.href ? (
                             <>
                                 <BreadcrumbLink
@@ -144,12 +148,12 @@ const NavigationBreadcrumbs = ({ course, module }: NavigationBreadcrumbsProps) =
                             </BreadcrumbPage>
                         )}
                     </BreadcrumbItem>
-                ))}
+                )) : null}
             </BreadcrumbList>
         </Breadcrumb>
 
 
-
+        {/* 
         {isMobile ? <>
         </> : <>
             <Breadcrumb>
@@ -171,7 +175,7 @@ const NavigationBreadcrumbs = ({ course, module }: NavigationBreadcrumbsProps) =
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
-        </>}
+        </>} */}
     </>
     );
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Sidebar } from './_components/Sidebar';
 import { Navbar } from './_components/Navbar';
+import NavigationBreadcrumbs from './(routes)/tutor/edit-course/[courseId]/_components/navigation-breadcrumb';
 
 const DashboardLayout = ({
     children }: {
@@ -11,6 +12,7 @@ const DashboardLayout = ({
             <Navbar />
             <Sidebar />
             <main className='h-full md:pl-48 *:wrapper' role="main">
+            <NavigationBreadcrumbs/>
                 {children}
             </main>
         </div>

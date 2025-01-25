@@ -34,13 +34,28 @@ const CourseModulePage = async ({ params }: { params: Promise<{ courseId: string
     const courseWallpaperIsValid = await imageUrlIsValid(course?.wallpaperUrl ? course?.wallpaperUrl : '');
     return (
         <>
-            {/* <NavigationBreadcrumbs course={course} module={module}/> */}
             <h1>Module editing</h1>
             <Tabs defaultValue="main-info">
                 <TabsList className="mb-3">
                     <TabsTrigger value="main-info">Main info</TabsTrigger>
                     <TabsTrigger value="content">Content</TabsTrigger>
                 </TabsList>
+
+                {/* MOBILE VIEW */}
+                <div className="sm:hidden flex flex-col space-y-6">
+                <TabsContent value="main-info">
+                            <EditTitleForm initials={module} courseId={courseId} />
+                        </TabsContent>
+                        <TabsContent value="content" className="flex flex-col w-full gap-6">
+                            <TextEditSection />
+                </TabsContent>
+
+                {/* modify element: table to upload images/video */}
+                <DraggableTable objects={modules} courseId={courseId} />
+                </div>
+
+                 {/* DESKTOP VIEW */}
+                <div className="hidden sm:block">
                 <ResizablePanelGroup direction="horizontal" className="gap-x-3">
                     <ResizablePanel defaultSize={1/3} className="px-2">
                         <TabsContent value="main-info">
@@ -55,20 +70,8 @@ const CourseModulePage = async ({ params }: { params: Promise<{ courseId: string
                         <DraggableTable objects={modules} courseId={courseId} />
                     </ResizablePanel>
                 </ResizablePanelGroup>
-                {/* <div className="grid grid-cols-3 gap-4 *:transition *:ease-in-out">
-                    <div className='col-span-2'>
-                        <TabsContent value="main-info">
-                        <EditTitleForm initials={module} courseId={courseId}/>
-                        </TabsContent>
-                        <TabsContent value="content" className="flex flex-col w-full gap-6">
-                            <TextEditSection />
-                        </TabsContent>
-                    </div>
-                    <div className="col-span-1">
-                        create not draggble table + combine with img/vide uploader 
-                        <DraggableTable objects={modules} courseId={courseId} />
-                    </div>
-                </div> */}
+                </div>
+                
             </Tabs>
         </>
     );
