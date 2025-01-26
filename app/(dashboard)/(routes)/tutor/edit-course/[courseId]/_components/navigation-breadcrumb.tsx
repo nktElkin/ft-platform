@@ -48,35 +48,47 @@ interface ItemInterface {
     label: string
 }
 
-const setItemsArray = (overview: string, course: string, module: string): ItemInterface[] => {
+const setItemsArray = (maxVisibleNumber : number, overview: string, course: string, module: string):[ItemInterface[], ItemInterface[]] => {
     const items: ItemInterface[] = [];
     items.push({ href: "/", label: "Home" });
     if (overview) items.push({ href: overview, label: "Overview" });
     if (course) items.push({ href: course, label: "Course" });
     if (module) items.push({ href: module, label: "Module" });
-    return items;
+    const hiddenItems: ItemInterface[] = []
+    const visibleItems: ItemInterface[] = []
+
+    if(items.length > maxVisibleNumber){
+        hiddenItems.push(...items.slice(0, (items.length - maxVisibleNumber)));
+        visibleItems.push(...items.slice(maxVisibleNumber));
+    }
+    return [hiddenItems, visibleItems];
 }
+
 
 const NavigationBreadcrumbs = () => {
     const [open, setOpen] = useState(false)
     const isMobile = useMediaQuery({ maxWidth: 640 });
     const pathname = usePathname()
 
-    const items: ItemInterface[] = setItemsArray(getPathWithNext(pathname, 'overview'), getPathWithNext(pathname, 'course'), getPathWithNext(pathname, 'module'));
-    console.log(items);
-    const ITEMS_TO_DISPLAY = 3;
+    const ITEMS_TO_DISPLAY = 2; 
+    const items = setItemsArray(ITEMS_TO_DISPLAY, getPathWithNext(pathname, 'overview'), getPathWithNext(pathname, 'course'), getPathWithNext(pathname, 'module'));
+    const hiddenItems = items[0] && items[0].length > 0 ? items[0] : null;
+    const visibleItems = items[1];
 
-    return (<>
-
+  
+    return (
+    <nav aria-description="Breadcrumb navigation" aria-label="Breadcrumb">
         <Breadcrumb>
             <BreadcrumbList>
-                <BreadcrumbItem className="hover:underline hover:text-zinc-700">
+                {/* <BreadcrumbItem className="hover:underline hover:text-zinc-700">
                     <BreadcrumbLink href={items[0].href}>{items[0].label}</BreadcrumbLink>
                 </BreadcrumbItem>
-                <BreadcrumbSeparator/>
-                {items.length > ITEMS_TO_DISPLAY ? (
+                <BreadcrumbSeparator/> */}
+
+                {/* hidden breadcrumb */}
+                {hiddenItems?.length ? (
                     <>
-                        <BreadcrumbItem>
+                        <BreadcrumbItem className="first:bg-inherit first:z-10 first:opacity-100">
                             {!isMobile ? (
                                 <DropdownMenu open={open} onOpenChange={setOpen}>
                                     <DropdownMenuTrigger
@@ -85,8 +97,8 @@ const NavigationBreadcrumbs = () => {
                                     >
                                         <BreadcrumbEllipsis className="h-4 w-4" />
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent className="bg-inherit" align="start">
-                                        {items.slice(1, -2).map((item, index) => (
+                                    <DropdownMenuContent className="bg-background" align="start">
+                                        {hiddenItems.map((item, index) => (
                                             <DropdownMenuItem key={index}>
                                                 <Link href={item.href ? item.href : "#"}>
                                                     {item.label}
@@ -95,6 +107,7 @@ const NavigationBreadcrumbs = () => {
                                         ))}
                                     </DropdownMenuContent>
                                 </DropdownMenu>
+                                
                             ) : (
                                 <Drawer open={open} onOpenChange={setOpen}>
                                     <DrawerTrigger aria-label="Toggle Menu">
@@ -108,7 +121,7 @@ const NavigationBreadcrumbs = () => {
                                             </DrawerDescription>
                                         </DrawerHeader>
                                         <div className="grid gap-1 px-4">
-                                            {items.slice(1, -2).map((item, index) => (
+                                            {hiddenItems.map((item, index) => (
                                                 <Link
                                                     key={index}
                                                     href={item.href ? item.href : "#"}
@@ -130,7 +143,7 @@ const NavigationBreadcrumbs = () => {
                         <BreadcrumbSeparator />
                     </>
                 ) : null}
-                {items.length > 1 ? items.slice(-ITEMS_TO_DISPLAY + 1).map((item, index) => (
+                {visibleItems.length > 1 ? visibleItems.map((item, index) => (
                     <BreadcrumbItem className={`hover:underline hover:text-zinc-700 ${item?.href === pathname ? 'text-zinc-700' : ''}`} key={index}>
                         {item.href ? (
                             <>
@@ -176,7 +189,7 @@ const NavigationBreadcrumbs = () => {
                 </BreadcrumbList>
             </Breadcrumb>
         </>} */}
-    </>
+    </nav>
     );
 }
 

@@ -1,7 +1,7 @@
 import EditCategoryForm from "./edit-category-form";
 import EditDescriptionForm from "./edit-description-form";
 import EditTitleForm from "./edit-title-form";
-import UploadMediaForm from "./upload-media-form";
+import UploadMediaForm from "./upload-courseMedia-form";
 
 interface CourseCreationFormProps {
   initials: any,

@@ -20,7 +20,7 @@ export async function POST (
         if (!user) return new NextResponse("User not found", { status: 404 });
         if (user?.role === "STUDENT") return new NextResponse("Permission denied", { status: 403 });
 
-        const courseId = await params.courseId;
+        const courseId = params.courseId;
        const {title} = await req.json(); 
        
        //    find the latest module

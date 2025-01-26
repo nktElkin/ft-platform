@@ -8,12 +8,13 @@ import PreviewCard from "@/components/ui/preview-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import CourseModuleCreationForm from "./_components/courseModule-form";
 import DraggableTable from "./_components/draggable-table";
+import { PublishCourseForm } from "./_components/pusblish-course-form";
 
 // import { describe } from "node:test";
 
 
 
-const CourseIdPage = async ({ params }: {params: Promise<{courseId: string}>}) => {
+const CourseIdPage = async ({ params }: { params: Promise<{ courseId: string }> }) => {
     const session = await auth();
 
 
@@ -32,7 +33,11 @@ const CourseIdPage = async ({ params }: {params: Promise<{courseId: string}>}) =
 
     return (
         <>
-            <h1>Let's edit your course</h1>
+            <div className="flex md:flex-row flex-col justify-between items-start md:items-center space-y-4 sm:space-y-0">
+                <h1>Let's edit your course</h1>
+                <PublishCourseForm allowedToPublish={modules.some((module) => module.isPublished)} initialValue={course.isPublished} />
+            </div>
+
             <div className="md:grid grid-cols-2 gap-4">
                 <Tabs defaultValue="course">
                     <TabsList className="mb-3">
@@ -46,18 +51,18 @@ const CourseIdPage = async ({ params }: {params: Promise<{courseId: string}>}) =
                         }))} defaultCategory={defaultCategory ? defaultCategory.categoryName : ''} courseWallpaperIsValid={courseWallpaperIsValid} />
                     </TabsContent>
                     <TabsContent value="mudule" className="flex flex-col w-full gap-6">
-                        <CourseModuleCreationForm courseId={course?.id}/>
+                        <CourseModuleCreationForm courseId={course?.id} />
                     </TabsContent>
                 </Tabs>
                 <div className="hidden md:block">
                     <h3>Course</h3>
-                    <PreviewCard object={course} variant="course" courseCategory={defaultCategory ? defaultCategory.categoryName : ''}/>
-                    {modules.length ? 
-                    <>
-                        <br />
-                        <h3>Course modules</h3>
-                        <DraggableTable objects={modules} courseId={course?.id} />
-                    </> : ''}
+                    <PreviewCard object={course} variant="course" courseCategory={defaultCategory ? defaultCategory.categoryName : ''} />
+                    {modules.length ?
+                        <>
+                            <br />
+                            <h3>Course modules</h3>
+                            <DraggableTable objects={modules} courseId={course?.id} />
+                        </> : ''}
                 </div>
             </div>
         </>
