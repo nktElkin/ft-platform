@@ -33,8 +33,6 @@ export function PublishModuleForm({ allowedToPublish, initialValue, courseId, mo
     const [currentState, setCurrentState] = useState(initialValue)
     const router = useRouter()
 
-    console.log('allowedToPublish', allowedToPublish)
-    console.log('only that is pusblished', switcher)
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
