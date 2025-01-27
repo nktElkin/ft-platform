@@ -17,6 +17,7 @@ import {
 import { PublishModuleForm } from "./_components/pusblish-module-form";
 import UploadCourseMediaForm from "./_components/upload-moduleMedia-form";
 import LoadingSpinner from "@/components/ui/loading-spinner";
+import { log } from "console";
 
 
 const handleMarkdownUpload = async (value: string) => {
@@ -24,21 +25,24 @@ const handleMarkdownUpload = async (value: string) => {
 }
 
 const CourseModulePage = async ({ params }: { params: Promise<{ courseId: string, moduleId: string }> }) => {
+    let allowedToPublish = false;
 
-    const { session, currentUser } = await getSession();
+    // getting course and module using params
     const courseId = (await params)?.courseId;
     const moduleId = (await params)?.moduleId;
-
     const course = await db.course.findUnique({ where: { id: courseId } });
     const modules = await db.courseModule.findMany({ where: { courseId }, orderBy: { index: 'asc' } });
+    const pablishedModulesOnly = await db.courseModule.findMany({ where: { courseId, isPublished : true }, orderBy: { index: 'asc' } });
     const currentModule = await db.courseModule.findUnique({ where: { id: moduleId, courseId } });
 
+    // check pesmission + protection
     const hasPersmission = await hasPersmissionToEdit(course ? course.authorId : null);
-    if (!course || !hasPersmission) return redirect('/');
+    if (!course || !currentModule || !hasPersmission) return redirect('/');
 
-    const defaultCategory = await db.category.findUnique({ where: { id: course?.categoryId } }) || '';
+    // publishing data
+    const fullFilled = Object.keys(currentModule).filter(key => currentModule[key as keyof typeof currentModule] !== null && currentModule[key as keyof typeof currentModule] !== '' && currentModule[key as keyof typeof currentModule] !== undefined).length === Object.keys(currentModule).length;
+    if (currentModule && fullFilled) allowedToPublish = true;
 
-    const courseWallpaperIsValid = await imageUrlIsValid(course?.wallpaperUrl ? course?.wallpaperUrl : '');
     return (
         <>
             <div className="flex md:flex-row flex-col justify-between items-start md:items-center space-y-4 sm:space-y-0">
@@ -46,7 +50,7 @@ const CourseModulePage = async ({ params }: { params: Promise<{ courseId: string
                     <LoadingSpinner state='' />
                     <h1>Module editing</h1>
                 </div>
-                <PublishModuleForm allowedToPublish={true} initialValue={currentModule?.isPublished || false} />
+                <PublishModuleForm courseId={courseId} moduleId={moduleId} allowedToPublish={allowedToPublish} initialValue={currentModule?.isPublished || false} switcher={course.isPublished && pablishedModulesOnly[0]?.id === currentModule.id ? true : false}/>
             </div>
             <Tabs defaultValue="main-info">
                 <TabsList className="mb-3">

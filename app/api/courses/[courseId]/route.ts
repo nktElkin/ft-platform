@@ -12,18 +12,20 @@ export async function PATCH(req : Request, { params }: { params: { courseId: str
         const values = await req.json();
         if (!values) return NextResponse.json({ message: '[COURSE-PATCH] Invalid request body' }, { status: 400 });
         //update data
+        // return NextResponse.json({values});
         const course = await db.course.update({
           where: {
             id: courseId
           },
           data: {
+            // ...values,
             title: values?.title,
             description: values?.description,
-            updatedAt: new Date(),
             wallpaperUrl: values?.wallpaperUrl,
             authorId: values?.authorId,
             categoryId: values?.categoryId,
             isPublished: values?.isPublished,
+            updatedAt: new Date(),
           },
         });
         if (!course) return NextResponse.json({ message: '[COURSE-PATCH] Faild upadte' }, { status: 404 });

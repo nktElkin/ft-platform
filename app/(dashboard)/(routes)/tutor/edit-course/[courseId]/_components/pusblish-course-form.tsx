@@ -15,6 +15,7 @@ import {
 import { Switch } from "@/components/ui/switch"
 import { toast } from "sonner";
 import { useState } from "react"
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
     isPublished: z.boolean().default(false),
@@ -22,11 +23,13 @@ const FormSchema = z.object({
 
 interface PublishFormProps {
     allowedToPublish: boolean;
-    initialValue: boolean
+    initialValue: boolean,
+    courseId: string
 }
 
-export function PublishCourseForm({allowedToPublish, initialValue}: PublishFormProps) {
+export function PublishCourseForm({allowedToPublish, initialValue, courseId}: PublishFormProps) {
     const [currentState, setCurrentState] = useState(initialValue)
+    const router = useRouter();
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -35,17 +38,26 @@ export function PublishCourseForm({allowedToPublish, initialValue}: PublishFormP
         },
     })
 
-    function onSubmit(data: z.infer<typeof FormSchema>) {
-        // toast({
-        //   title: "You submitted the following values:",
-        //   description: (
-        //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-        //       <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        //     </pre>
-        //   ),
-        // })
-        toast.message(JSON.stringify(data, null, 2))
-        setCurrentState(!currentState);
+    async function onSubmit(data: z.infer<typeof FormSchema>) {
+        try {
+            const response = await fetch(`/api/courses/${courseId}`, { method: "PATCH", body: JSON.stringify({isPublished : data.isPublished}) });
+            if (!response.ok) {
+                const error = await response.text();
+                toast.error('Fild uattenpt')
+                throw new Error(response.status === 404
+                    ? "Course not found. Please check the course ID."
+                    : `Failed to update course: ${error}`);
+            }
+            // console.log(response.json())
+            // const responseData = await response.json();
+            // console.log(responseData)
+            toast.success("Successfully aplied");
+            setCurrentState(!currentState);
+            router.refresh();
+        } catch (error) {
+            toast.error('Fild uattenpt')
+            // console.error(error)
+        }
     }
 
     return (

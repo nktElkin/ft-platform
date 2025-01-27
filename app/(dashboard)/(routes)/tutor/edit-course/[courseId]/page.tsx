@@ -35,7 +35,7 @@ const CourseIdPage = async ({ params }: { params: Promise<{ courseId: string }> 
         <>
             <div className="flex md:flex-row flex-col justify-between items-start md:items-center space-y-4 sm:space-y-0">
                 <h1>Let's edit your course</h1>
-                <PublishCourseForm allowedToPublish={modules.some((module) => module.isPublished)} initialValue={course.isPublished} />
+                <PublishCourseForm courseId={id} allowedToPublish={modules.some((module) => module.isPublished)} initialValue={course.isPublished} />
             </div>
 
             <div className="md:grid grid-cols-2 gap-4">

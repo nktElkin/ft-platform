@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import LoadingSpinner from '@/components/ui/loading-spinner';
 // import { uploadMakrdownToDB } from '@/lib/actions';
 import MDEditor from '@uiw/react-md-editor';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from "react";
 import rehypeSanitize from "rehype-sanitize";
 
@@ -19,6 +20,7 @@ const TextEditSection = ({ initialValue, courseId, moduleId, time = 2000 }: Text
     const [value, setValue] = useState(initialValue);
     const [isLoading, setIsLoading] = useState(false);
     const [lastSavedValue, setLastSavedValue] = useState(initialValue);
+    const router = useRouter();
 
 
     const uploadContent = useCallback(async () => {
@@ -46,6 +48,7 @@ const TextEditSection = ({ initialValue, courseId, moduleId, time = 2000 }: Text
                 );
             }
             setLastSavedValue(value);
+            router.refresh();
         } catch (error) {
             console.error('Upload failed:', error);
         } finally {
