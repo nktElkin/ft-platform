@@ -1,0 +1,43 @@
+'use client'
+
+import {useCallback, useState } from "react";
+import LoadingSpinner from "@/components/ui/loading-spinner";
+import SearchLine from "./search";
+import { CategoryFilter } from "./filter-category";
+import ContentBox from "./content-box";
+
+
+
+const PageLayout = ({categories}:any) => {
+
+     const [content, setContent] = useState();
+        const [isLoading, setIsLoading] = useState(true);
+        const [requestFilter, setRequestFilter] = useState<{ value: string; label: string } | null>();
+    
+    
+        const handleRequest = useCallback((data:any) => {
+            setContent(data);
+        }, []);
+        
+        const handleRequestFilter = useCallback((filter : { value: string; label: string } | null) => {
+            setRequestFilter(filter);
+        }, []);
+    
+        const handleLoading = useCallback((loading:boolean) => {
+            setIsLoading(loading);
+        }, []);
+    
+
+
+    return ( <>
+        <div className="top-0 sticky z-10 bg-background md:flex md:flex-row">
+                <div className="flex-grow max-w-xl mx-auto mb-3 md:mb-0 space-y-2">
+                    <SearchLine onRequest={handleRequest} onLoading={handleLoading}/>
+                    <CategoryFilter categories={categories} onSetFilter={handleRequestFilter} onLoading={handleLoading}/>
+                </div>
+        </div>
+            <ContentBox content={content} isLoading={isLoading} requestFilter={requestFilter}/>
+        </>);
+}
+ 
+export default PageLayout;

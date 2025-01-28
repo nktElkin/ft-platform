@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 interface SearchLineProps {
@@ -11,7 +11,7 @@ interface SearchLineProps {
     onLoading: (isLoading: boolean) => void;
 }
 
-const SearchLine = ({onRequest, onLoading}:SearchLineProps) => {
+const SearchLine = memo(function Searchline({onRequest, onLoading}:SearchLineProps) {
     const [query, setQuery] = useState("");
 
     const doSearch = async (query: string) => {
@@ -55,6 +55,6 @@ const SearchLine = ({onRequest, onLoading}:SearchLineProps) => {
             </form>
         </div>
     );
-};
+});
 
 export default SearchLine;

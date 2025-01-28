@@ -60,6 +60,8 @@ const setItemsArray = (maxVisibleNumber : number, overview: string, course: stri
     if(items.length > maxVisibleNumber){
         hiddenItems.push(...items.slice(0, (items.length - maxVisibleNumber)));
         visibleItems.push(...items.slice(maxVisibleNumber));
+    }else{
+        visibleItems.push(...items);
     }
     return [hiddenItems, visibleItems];
 }
@@ -69,7 +71,7 @@ const NavigationBreadcrumbs = () => {
     const [open, setOpen] = useState(false)
     const isMobile = useMediaQuery({ maxWidth: 640 });
     const pathname = usePathname()
-
+    
     const ITEMS_TO_DISPLAY = 2; 
     const items = setItemsArray(ITEMS_TO_DISPLAY, getPathWithNext(pathname, 'overview'), getPathWithNext(pathname, 'course'), getPathWithNext(pathname, 'module'));
     const hiddenItems = items[0] && items[0].length > 0 ? items[0] : null;
