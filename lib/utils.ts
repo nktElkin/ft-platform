@@ -9,7 +9,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export async function imageUrlIsValid(url: string) {
+export async function imageUrlIsValid(url: string | null | undefined) {
+  if (!url) return false
   return fetch(url, { method: 'HEAD' }).then((res) => {
     if (res.ok){
       return true

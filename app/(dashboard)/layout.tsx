@@ -8,7 +8,7 @@ const DashboardLayout = ({
         children: React.ReactNode;
     }) => {
     return (
-        <div className='h-full flex flex-col'>
+        <div className='h-full flex flex-col min-w-80'>
             <Navbar />
             <Sidebar />
             <main className='h-full md:pl-48 *:wrapper' role="main">

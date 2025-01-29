@@ -1,7 +1,6 @@
 'use client'
 
 import {useCallback, useState } from "react";
-import LoadingSpinner from "@/components/ui/loading-spinner";
 import SearchLine from "./search";
 import { CategoryFilter } from "./filter-category";
 import ContentBox from "./content-box";

@@ -157,8 +157,14 @@ h2 {
   .btn-primary {
     @apply py-2 px-5 bg-violet-500 text-white font-semibold rounded-full shadow-md hover:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 focus:ring-opacity-75;
   }
+  .container{
+    @apply h-auto flex w-auto rounded-md border border-input bg-transparent p-3 items-center text-base shadow-sm md:text-sm;
+  }
   .wrapper {
-    @apply p-4 md:pt-4 md:px-5;
+    padding: 1em;
+    @media screen and (min-width: 768px) {
+      padding: 2em 1.25em auto;
+    }
   }
 }
 

@@ -25,6 +25,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { ContactRound } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -59,7 +60,7 @@ const setItemsArray = (maxVisibleNumber : number, overview: string, course: stri
 
     if(items.length > maxVisibleNumber){
         hiddenItems.push(...items.slice(0, (items.length - maxVisibleNumber)));
-        visibleItems.push(...items.slice(maxVisibleNumber));
+        visibleItems.push(...items.slice(maxVisibleNumber-1));
     }else{
         visibleItems.push(...items);
     }
@@ -71,12 +72,11 @@ const NavigationBreadcrumbs = () => {
     const [open, setOpen] = useState(false)
     const isMobile = useMediaQuery({ maxWidth: 640 });
     const pathname = usePathname()
+
+    
     
     const ITEMS_TO_DISPLAY = 2; 
-    const items = setItemsArray(ITEMS_TO_DISPLAY, getPathWithNext(pathname, 'overview'), getPathWithNext(pathname, 'course'), getPathWithNext(pathname, 'module'));
-    const hiddenItems = items[0] && items[0].length > 0 ? items[0] : null;
-    const visibleItems = items[1];
-
+    const [hiddenItems, visibleItems] = setItemsArray(ITEMS_TO_DISPLAY, getPathWithNext(pathname, 'overview'), getPathWithNext(pathname, 'course'), getPathWithNext(pathname, 'module'));
   
     return (
     <nav aria-description="Breadcrumb navigation" aria-label="Breadcrumb">
