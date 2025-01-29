@@ -168,7 +168,6 @@ model UserProgress{
   id           String      @id @default(auto()) @map("_id") @db.ObjectId
   progress     Int         @default(0)
   userId       String      @db.ObjectId
-
   courseModuleId String   @db.ObjectId
   courseModule CourseModule @relation(fields: [courseModuleId], references: [id], onDelete: Cascade)
 

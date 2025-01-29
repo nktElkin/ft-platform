@@ -12,12 +12,10 @@ import { usePathname } from "next/navigation";
 
 interface ModulesTableProps {
   modules: CourseModule[];
-  currentUser: User;
+  currentUser: User | null;
 }
 
 const ModulesTable = ({ modules, currentUser}: ModulesTableProps) => {
-  console.log('modules: ', modules)
-  console.log(modules.map((module: CourseModule) => { return (<>{module?.title}</>) }))
 
   if (!modules.length) return (<>
     <h3 className="text-zinc-500">Unfortunatelly in this course is nothing to study currenly, please visit later...</h3></>)
@@ -37,7 +35,7 @@ const ModulesTable = ({ modules, currentUser}: ModulesTableProps) => {
               </span>
             </AccordionTrigger>
             <AccordionContent id={`content-${module?.id}`} aria-labelledby={`trigger-${module?.id}`} role="region">
-              <div className="flex flex-row justify-between items-center">
+              <div className="flex flex-col items-start">
               {module?.description || <>Looks like authout did't add description for that course.<br /> Let's try it!</>}
               {/* <Link href={`/overview/course/${module.courseId}/module/${module.id}`}><ArrowRight/></Link> */}
               </div>
