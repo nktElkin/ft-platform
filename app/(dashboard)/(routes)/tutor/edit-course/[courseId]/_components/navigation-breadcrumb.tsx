@@ -52,7 +52,7 @@ interface ItemInterface {
 const setItemsArray = (maxVisibleNumber : number, overview: string, course: string, module: string):[ItemInterface[], ItemInterface[]] => {
     const items: ItemInterface[] = [];
     items.push({ href: "/", label: "Home" });
-    if (overview) items.push({ href: overview, label: "Overview" });
+    if (overview) items.push({ href: '/overview', label: "Overview" });
     if (course) items.push({ href: course, label: "Course" });
     if (module) items.push({ href: module, label: "Module" });
     const hiddenItems: ItemInterface[] = []

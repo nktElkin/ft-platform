@@ -3,6 +3,7 @@ import { getSession, imageUrlIsValid } from "@/lib/utils";
 import { redirect } from "next/navigation";
 import HeaderBanner from "./_components/header-banner";
 import ModulesTable from "./_components/modules-table";
+import { GetStaticPaths, GetStaticProps } from "next";
 
 
 const CourseIdPage = async ({ params }: { params: Promise<{ courseId: string }> }) => {
@@ -17,10 +18,6 @@ const CourseIdPage = async ({ params }: { params: Promise<{ courseId: string }> 
         (await db.courseModule.findMany({ where: { courseId },orderBy: {index: 'asc'} })).filter((module) => module.isPublished === true) :
         (await db.courseModule.findMany({ where: { courseId },orderBy: {index: 'asc'}}));
     const validImageUrl = await imageUrlIsValid(course?.wallpaperUrl);
-
-    console.log('student: ', modules)
-
-
 
     return (
         <div className="flex flex-col lg:flex lg:flex-row">
@@ -43,7 +40,17 @@ const CourseIdPage = async ({ params }: { params: Promise<{ courseId: string }> 
             </section>
         </div>
     );
-}
+};
+
+// Используем generateStaticParams для динамических маршрутов
+export const generateStaticParams = async () => {
+    const courses = await db.course.findMany({ select: { id: true } });
+    return courses.map(course => ({
+        courseId: course.id,
+    }));
+};
+
+
 
 
 export default CourseIdPage;

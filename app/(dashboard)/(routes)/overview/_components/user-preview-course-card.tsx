@@ -9,7 +9,7 @@ interface CoursePreviewCardProps {
 
 const CoursePreviewCard = ({ course, courseCategory = 'Uncategorized' }: CoursePreviewCardProps) => {
     return (
-        <Link href={`overview/course/${course.id}`} className="h-full block">
+        <Link href={`overview/course/${course.id}`} className="h-full w-auto lg:max-w-72 block">
                 <div aria-roledescription='course preview-card' className='h-full w-full rounded-md border border-input bg-transparent p-3 text-base shadow-sm sm:text-sm relative hover:shadow-md transition duration-300 ease-in-out  flex flex-col justify-around'>
                     <div>
                         {course?.wallpaperUrl && <img src={`${course?.wallpaperUrl}`} alt="object Image" className="w-full h-40 sm:h-20 object-cover rounded-t-md mb-3" />}
