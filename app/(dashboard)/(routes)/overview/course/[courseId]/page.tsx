@@ -8,6 +8,7 @@ import Link from "next/link";
 import { AuthError } from "next-auth";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { create } from "domain";
 
 
 // generateStaticParams for dynamical routes
@@ -31,13 +32,30 @@ const CourseIdPage = async ({ params }: { params: Promise<{ courseId: string }> 
         (await db.courseModule.findMany({ where: { courseId }, orderBy: { index: 'asc' } }));
     const validImageUrl = await imageUrlIsValid(course?.wallpaperUrl);
 
+    // get progresses for current course modules
+    const progress = await db.userProgress.findMany({
+        where: {
+            userId: currentUser?.id,
+            courseModuleId: {
+                in: modules.map(module => module.id)
+            },
+            isDone: false,
+        },
+        orderBy: {
+            createdAt: 'desc'
+        }
+    });
+
+    const progressPointModule = modules.find((module) => module.id === progress[0].courseModuleId);
+    const nextCourseModule = progressPointModule ? modules.find(module => module.index === progressPointModule?.index + 1) : null;
+    
 
 
-    const progressValue = 0;
-    const nextCourseModule = 123;
+    const progressValue = 50;
+    // const nextCourseModule = 123;
 
     return (
-        <div className="flex flex-col lg:flex lg:flex-row">
+        <div className="flex flex-col lg:flex lg:flex-row lg:space-x-5">
             <section aria-description="course information" className="lg:w-2/3 lg:grow mb-4 lg:mb-0">
                 {/* Course head banner */}
                 {(validImageUrl && course?.wallpaperUrl)
@@ -53,7 +71,7 @@ const CourseIdPage = async ({ params }: { params: Promise<{ courseId: string }> 
             </section>
 
 
-            <section aria-description={`${courseAutor ? 'author information' : ''}, course progress`} className="lg:pl-5 lg:w-1/3">
+            <section aria-description={`${courseAutor ? 'author information' : ''}, course progress`} className="lg:w-1/3">
 
             {/* component start*/}
                 <div className="container flex flex-col space-y-4 py-6 px-4 sm:px-6 lg:px-4 hover:shadow-2xl">
@@ -74,10 +92,11 @@ const CourseIdPage = async ({ params }: { params: Promise<{ courseId: string }> 
                     <hr className="border-slate-800" />
                 </div>
                     <div className="container flex flex-col space-y-4 py-6 px-4 sm:px-6 lg:px-4 hover:shadow-2xl">
-                        {progressValue>0 && <>
-                        <Progress value={progressValue} max={100} />
-                        <p>{progressValue}% already done, continue</p>
-                        </>}
+                        {progressValue>0 && 
+                        <div className="flex flex-col space-y-1">
+                        <Progress className="h-3" value={progressValue} max={100} />
+                        <p className="text-xs">{progressValue}% already done!</p>
+                        </div>}
                         <Link href={`/overview/course/${courseId}/module/${nextCourseModule?.id}`}>
                         <Button className="w-full hover:outline-2 hover:outline-offset-2 hover:outline-slate-800">{progressValue>10 ? 'Continue learning' : 'Check In'}</Button>
                         </Link>

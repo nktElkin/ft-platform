@@ -23,6 +23,7 @@ model User {
   hashedPassword String?
   emailVerified DateTime?
   image         String?
+  sory         String?
 
   accounts      Account[]
   sessions      Session[]
@@ -166,13 +167,15 @@ model CourseModule{
 
 model UserProgress{
   id           String      @id @default(auto()) @map("_id") @db.ObjectId
-  progress     Int         @default(0)
+  isDone     Boolean         @default(false)
   userId       String      @db.ObjectId
   courseModuleId String   @db.ObjectId
   courseModule CourseModule @relation(fields: [courseModuleId], references: [id], onDelete: Cascade)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   @@index([courseModuleId])
-  @@unique([userId, courseModuleId]) //the combination of user and thir progress must be uniqueq for each course, so just one unique combination for user<->courseModule
+  @@unique([userId, courseModuleId]) //the combination of user and their progress must be uniqueq for each course, so just one unique combination for user<->courseModule
 
   // no direct relation to User, as progress depends on the courseModule, not on user
 }

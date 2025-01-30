@@ -6,9 +6,6 @@ import {
 } from "@/components/ui/accordion"
 import Indicator from "@/components/ui/indicator";
 import { CourseModule, User } from "@prisma/client";
-import { ArrowRight } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 interface ModulesTableProps {
   modules: CourseModule[];
