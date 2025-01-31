@@ -124,7 +124,7 @@ model Course {
 
 // model Attachment presents the array of Url for the CourseModule
 model Attachment {
-  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  id               String   @id @map("_id") @db.ObjectId //id is passing by GCS
   altText          String?  @db.String
   descriptionShort String?
   descriptionLong  String?

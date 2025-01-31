@@ -31,3 +31,8 @@ export async function hasPersmissionToEdit(creatorId: string | null){
   if (currentUser?.role === 'TUTOR' && currentUser?.id === creatorId) return true;
   return false;
 }
+
+export function generateId(){
+  const id = Date.now() * Math.floor(Math.random() * 100)
+  return id;
+}

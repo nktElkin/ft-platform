@@ -27,6 +27,7 @@ const UploadMediaForm = ({ initials, courseId, isValidImageUrl}:CourseCreationFo
     const [isSubmitting, setIsSubmitting] = useState(false);
     const router = useRouter();
     const [file, setFile] = useState<File>();
+    console.log('file', file)
     const { edgestore } = useEdgeStore();
     const [progress, setProgress] = useState(0);
 
