@@ -75,7 +75,6 @@ export async function DELETE(
 }
 
 
-
 export async function PATCH(
     req: Request,
     { params }: { params: { courseId: string, moduleId: string } }
@@ -104,6 +103,10 @@ export async function PATCH(
             }
         });
         if (!actionCourseModule) return new NextResponse("Course module not found", { status: 404 });
+
+
+        console.log('>>>>>>>>>module ', actionCourseModule);
+        console.log('>>>>>>>>>updateValues ', values);
        
         const updateCourseModule = await db.courseModule.update({
             where: {
@@ -112,8 +115,10 @@ export async function PATCH(
             },
             data:{
                 ...values,
+                updatedAt: new Date()
             }
         });
+
 
         //updating course and other modules index 
         if (updateCourseModule) {

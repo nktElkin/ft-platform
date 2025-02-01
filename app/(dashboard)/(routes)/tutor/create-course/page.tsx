@@ -46,6 +46,7 @@ export default function CreateCoursePage() {
                 cancel: {
                     label: 'Undo',
                     onClick() {
+                        // TODO: implememt undo action
                         console.log("undo course creating with titile: ", values);
                     },
                     actionButtonStyle: {},
@@ -55,8 +56,6 @@ export default function CreateCoursePage() {
             if (!responseData.course) throw new Error("Failed to create course");
             router.push(`/tutor/edit-course/${responseData.course.id}`);
         } catch (error) {
-            // Do something with the form values.
-            // ✅ This will be type-safe and validated.
             toast.error("Failed to create course");
             console.error(error);
         }

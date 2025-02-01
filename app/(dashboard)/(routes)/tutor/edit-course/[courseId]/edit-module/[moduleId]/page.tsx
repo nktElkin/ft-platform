@@ -1,5 +1,3 @@
-import { auth } from "@/auth";
-import PreviewCard from "@/components/ui/preview-card";
 import { db } from "@/lib/db";
 import { hasPersmissionToEdit, getSession, imageUrlIsValid } from "@/lib/utils";
 import { redirect } from "next/navigation";
@@ -17,10 +15,12 @@ import {
 import { PublishModuleForm } from "./_components/pusblish-module-form";
 import UploadCourseMediaForm from "./_components/upload-moduleMedia-form";
 import LoadingSpinner from "@/components/ui/loading-spinner";
-import { log } from "console";
-import { SingleImageDropzone } from "@/components/image-upload-dropzone";
-import GCSDropzone from "@/components/gcs-dropzone";
-import GCSFileUploadForm from "@/components/gcs-object-upload-form";
+import GCFMediaUploadFormProps from "@/components/gcs-object-upload-form";
+import EditDesctiptionForm from "./_components/edit-moduleDescription-form";
+import RemoveCourseModuleBtn from "@/components/ui/cross-btn";
+import { CrossIcon, Link } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import AttachmentCard from "./_components/attachment-card";
 
 
 const handleMarkdownUpload = async (value: string) => {
@@ -37,6 +37,7 @@ const CourseModulePage = async ({ params }: { params: Promise<{ courseId: string
     const modules = await db.courseModule.findMany({ where: { courseId }, orderBy: { index: 'asc' } });
     const pablishedModulesOnly = await db.courseModule.findMany({ where: { courseId, isPublished: true }, orderBy: { index: 'asc' } });
     const currentModule = await db.courseModule.findUnique({ where: { id: moduleId, courseId } });
+    const attachments = await db.attachment.findMany({ where: { courseModuleId: moduleId } });
 
     // check pesmission + protection
     const hasPersmission = await hasPersmissionToEdit(course ? course.authorId : null);
@@ -63,41 +64,55 @@ const CourseModulePage = async ({ params }: { params: Promise<{ courseId: string
 
                 {/* MOBILE VIEW */}
                 <div className="sm:hidden flex flex-col space-y-6">
-                    <TabsContent value="main-info">
+                    <TabsContent value="main-info" className="flex flex-col space-y-6">
                         <EditTitleForm initials={currentModule} courseId={courseId} />
                         {/* edit description form */}
-                        <EditTitleForm initials={currentModule} courseId={courseId} />
+                        <EditDesctiptionForm initials={currentModule} courseId={courseId} />
                     </TabsContent>
                     <TabsContent value="content" className="flex flex-col w-full gap-6">
                         <TextEditSection initialValue={currentModule?.moduleContent ? currentModule?.moduleContent : ''} courseId={courseId} moduleId={moduleId} />
                     </TabsContent>
-
-                    {/* modify element: table to upload images/video */}
-                    {/* <GCSDropzone/> */}
-                    {/* <UploadCourseMediaForm /> */}
-                    {/* <DraggableTable objects={modules} courseId={courseId} /> */}
+                    <hr className="border-solid border-2 border-grey-100" />
+                    {/* <GCFMediaUploadFormProps courseId={courseId} moduleId={currentModule.id} /> */}
+                    <GCFMediaUploadFormProps  />
+                    {attachments.length > 0 && (
+                                <>
+                                <hr className="border-solid border-2 border-grey-100" />
+                                <>
+                                {attachments.map((attachment) => (
+                                    <AttachmentCard attachment={attachment}/>
+                                ))}
+                                </>
+                                </>
+                    )}
                 </div>
 
                 {/* DESKTOP VIEW */}
                 <div className="hidden sm:block">
                     <ResizablePanelGroup direction="horizontal" className="gap-x-3">
                         <ResizablePanel defaultSize={1 / 3} className="px-2">
-                            <TabsContent value="main-info">
+                            <TabsContent value="main-info" className="flex flex-col space-y-6">
                                 <EditTitleForm initials={currentModule} courseId={courseId} />
                                 {/* edit description form */}
-                                <EditTitleForm initials={currentModule} courseId={courseId} />
+                                <EditDesctiptionForm initials={currentModule} courseId={courseId} />
                             </TabsContent>
                             <TabsContent value="content" className="flex flex-col w-full gap-6">
                                 <TextEditSection initialValue={currentModule?.moduleContent ? currentModule?.moduleContent : ''} courseId={courseId} moduleId={moduleId} />
                             </TabsContent>
                         </ResizablePanel>
                         <ResizableHandle withHandle className="hover:mx-3" />
-                        <ResizablePanel defaultSize={2/3}>
-                        <GCSFileUploadForm />
-                            {/* modify element: table to upload images/video */}
-                   
-                            {/* <UploadCourseMediaForm /> */}
-                            {/* <DraggableTable objects={modules} courseId={courseId} /> */}
+                        <ResizablePanel defaultSize={2 / 3} minSize={30} maxSize={60} className="px-2 flex flex-col space-y-6">
+                            <GCFMediaUploadFormProps  />
+                            {attachments.length > 0 && (
+                                <>
+                                <hr className="border-solid border-2 border-grey-100" />
+                                <>
+                                {attachments.map((attachment) => (
+                                    <AttachmentCard attachment={attachment}/>
+                                ))}
+                                </>
+                                </>
+                    )}
                         </ResizablePanel>
                     </ResizablePanelGroup>
                 </div>

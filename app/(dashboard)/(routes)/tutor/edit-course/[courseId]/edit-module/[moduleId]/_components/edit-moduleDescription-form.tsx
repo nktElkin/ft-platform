@@ -19,19 +19,19 @@ import InputCover from "@/components/ui/input-cover";
 import { CourseModule } from "@prisma/client";
 
 const formSchema = z.object({
-    title: z.string().min(2, {
-        message: "Title must be at least 2 characters",
+    description: z.string().min(2, {
+        message: "description must be at least 2 characters",
     })
 })
 
 type FormValues = z.infer<typeof formSchema>
 
-interface CourseCreationFormProps {
+interface EditDesctiptionFormProps {
     initials: CourseModule,
     courseId: string,
   }
 
-const EditTitleForm = ({initials, courseId}: CourseCreationFormProps) => {
+const EditDesctiptionForm = ({initials, courseId}: EditDesctiptionFormProps) => {
     const [isEditigin, setIsEditing] = useState(false);
     const router = useRouter();
 
@@ -42,13 +42,14 @@ const EditTitleForm = ({initials, courseId}: CourseCreationFormProps) => {
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            title: initials?.title || '',
+            description: initials?.description || '',
         }
     })
     const { isSubmitting, isValid } = form.formState;
 
     const onSubmit = async (values: FormValues) => {
         const moduleId = initials?.id;
+        
         try {
             const response = await fetch(`/api/courses/${courseId}/courseModules/${moduleId}`, { method: "PATCH", body: JSON.stringify(values) });
             if (!response.ok) {
@@ -57,9 +58,7 @@ const EditTitleForm = ({initials, courseId}: CourseCreationFormProps) => {
                     ? "Course not found. Please check the course ID."
                     : `Failed to update course: ${error}`);
             }
-            // const responseData = await response.json();
-            // console.log(responseData)
-            toast.success("Successfully aplied");
+            const responseData = await response.json();
         } catch (error) {
             toast.error('Fild uattenpt')
             // console.error(error)
@@ -71,20 +70,20 @@ const EditTitleForm = ({initials, courseId}: CourseCreationFormProps) => {
 
     return (
         <div className="flex flex-col space-y-8">
-            <Label className="">Course Title</Label>
+            <Label className="">Course description</Label>
             {!isEditigin &&
-                <InputCover value={initials?.title || '[No title yet]'} onToggle={editMode} controllerState={isEditigin} inputVariant="input"/>
+                <InputCover value={initials?.description || '[No description yet]'} onToggle={editMode} controllerState={isEditigin} inputVariant="input"/>
             }
             {isEditigin &&
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                         <FormField
                             control={form.control}
-                            name="title"
+                            name="description"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormControl>
-                                        <Input placeholder="Enter course title" {...field} disabled={isSubmitting} />
+                                        <Input placeholder="Enter course description" {...field} disabled={isSubmitting} />
                                     </FormControl>
                                 </FormItem>
                             )}
@@ -99,4 +98,4 @@ const EditTitleForm = ({initials, courseId}: CourseCreationFormProps) => {
     );
 }
 
-export default EditTitleForm;
+export default EditDesctiptionForm;

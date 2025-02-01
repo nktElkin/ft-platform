@@ -6,7 +6,7 @@ interface DropzoneProps {
   onUploadSuccess: (objectData: string) => void;
 }
 
-export default function GCSDropzone({ onUploadSuccess}: DropzoneProps) {
+const GCSDropzone = ({ onUploadSuccess}: DropzoneProps) => {
   const gcsUpload = async (file: File | null) => {
     if (!file) return;
 
@@ -21,7 +21,7 @@ export default function GCSDropzone({ onUploadSuccess}: DropzoneProps) {
       body: formData,
     });
 
-    console.log('response:', response);
+    // console.log('response:', response);
 
     if (response.ok) {
       const data = await response.json();
@@ -41,6 +41,8 @@ export default function GCSDropzone({ onUploadSuccess}: DropzoneProps) {
         />
   );
 }
+
+export default GCSDropzone;
 
 
 

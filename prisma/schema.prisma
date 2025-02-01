@@ -124,15 +124,14 @@ model Course {
 
 // model Attachment presents the array of Url for the CourseModule
 model Attachment {
-  id               String   @id @map("_id") @db.ObjectId //id is passing by GCS
+  id  String @id @map("_id") @db.String //id is passing by GCS
   altText          String?  @db.String
-  descriptionShort String?
-  descriptionLong  String?
+  description String?
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
-  urlPath          String
+  url          String
   courseModuleId  String   @db.ObjectId
-  course           CourseModule   @relation(fields: [courseModuleId], references: [id], onDelete: Cascade)
+  courseModule           CourseModule   @relation(fields: [courseModuleId], references: [id], onDelete: Cascade)
   @@map("attachments")
   @@index([courseModuleId])
 }
@@ -154,6 +153,7 @@ model CourseModule{
   updatedAt    DateTime    @updatedAt
   title        String
   moduleContent  String?
+  description  String?
   attachments  Attachment[]
   isPublished  Boolean     @default(false)
   index        Int         @default(0)
@@ -179,7 +179,3 @@ model UserProgress{
 
   // no direct relation to User, as progress depends on the courseModule, not on user
 }
-
-
-// TODO: remove attachments in course -> move to CourseModule
-// TODO: documentUrl in Course -> courseModules[] 
