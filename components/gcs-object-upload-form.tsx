@@ -37,6 +37,7 @@ import { Input } from "@/components/ui/input";
 import GCSDropzone from "./gcs-dropzone";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 // Define the form schema
 const FormSchema = z.object({
@@ -45,13 +46,15 @@ const FormSchema = z.object({
   url: z.string().url("Invalid URL"),
 });
 
-// interface GCFMediaUploadFormProps {
-//   moduleId: string;
-//   courseId: string;
-// }
+interface GCFMediaUploadFormProps {
+  moduleId: string;
+  courseId: string;
+}
 
-const GCFMediaUploadFormProps = () => {
-  const [fileUrl, setFileUrl] = useState<string | null>('https://storage.googleapis.com/mediastorage-buck/10430079863304.png'); // State to store the uploaded file URL
+const GCFMediaUploadFormProps = ({courseId, moduleId}: GCFMediaUploadFormProps) => {
+
+  const router = useRouter();
+  const [fileUrl, setFileUrl] = useState<string | null>(null); // State to store the uploaded file URL
   useEffect(() => {
     form.setValue("url", fileUrl ? fileUrl : '');
   }, [fileUrl]);
@@ -73,11 +76,6 @@ const GCFMediaUploadFormProps = () => {
       return;
     }
 
-
-
-    const courseId = '676e8fb07ef28e10b5566426';
-    const moduleId = '6790a2ac42a2db93549849cd';
-
     // Prepare the values
     const payload = {
       url: fileUrl,
@@ -87,8 +85,6 @@ const GCFMediaUploadFormProps = () => {
       courseModuleId: moduleId
     };
 
-
-      console.log(payload);
     try {
       const response = await fetch(`/api/media`, {
         method: "POST",
@@ -99,21 +95,19 @@ const GCFMediaUploadFormProps = () => {
       });
 
       const data = await response.json()
-      console.log(data);
-
-      // if (response.ok) {
-      //   alert("Media uploaded successfully!");
-      //   form.reset();
-      //   setFileUrl(null);
-      //   toast.success("Media uploaded successfully!");
-      // } else {
-      //   const errorData = await response.json();
-      //   console.error("Error submitting form:", errorData);
-      //   toast.error("Failed to upload media");
-      // }
+      if (response.ok) {
+        form.reset();
+        setFileUrl(null);
+        router.refresh();
+        toast.success("Media uploaded successfully!");
+      } else {
+        const errorData = await response.json();
+        console.log("Error submitting form:", errorData);
+        toast.error("Failed to upload media");
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
-      toast.error("Failed to upload media");
+      toast.error("Form cannot be submitted");
     }
   }
 

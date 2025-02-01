@@ -74,16 +74,16 @@ const CourseModulePage = async ({ params }: { params: Promise<{ courseId: string
                     </TabsContent>
                     <hr className="border-solid border-2 border-grey-100" />
                     {/* <GCFMediaUploadFormProps courseId={courseId} moduleId={currentModule.id} /> */}
-                    <GCFMediaUploadFormProps  />
+                    <GCFMediaUploadFormProps courseId={courseId} moduleId={moduleId} />
                     {attachments.length > 0 && (
-                                <>
-                                <hr className="border-solid border-2 border-grey-100" />
-                                <>
+                        <>
+                            <hr className="border-solid border-2 border-grey-100" />
+                            <>
                                 {attachments.map((attachment) => (
-                                    <AttachmentCard attachment={attachment}/>
+                                    <AttachmentCard attachment={attachment} />
                                 ))}
-                                </>
-                                </>
+                            </>
+                        </>
                     )}
                 </div>
 
@@ -102,17 +102,17 @@ const CourseModulePage = async ({ params }: { params: Promise<{ courseId: string
                         </ResizablePanel>
                         <ResizableHandle withHandle className="hover:mx-3" />
                         <ResizablePanel defaultSize={2 / 3} minSize={30} maxSize={60} className="px-2 flex flex-col space-y-6">
-                            <GCFMediaUploadFormProps  />
+                            <GCFMediaUploadFormProps courseId={courseId} moduleId={moduleId} />
                             {attachments.length > 0 && (
                                 <>
-                                <hr className="border-solid border-2 border-grey-100" />
-                                <>
-                                {attachments.map((attachment) => (
-                                    <AttachmentCard attachment={attachment}/>
-                                ))}
+                                    <hr className="border-solid border-2 border-grey-100" />
+                                    <>
+                                        {attachments.map((attachment) => (
+                                            <AttachmentCard attachment={attachment} />
+                                        ))}
+                                    </>
                                 </>
-                                </>
-                    )}
+                            )}
                         </ResizablePanel>
                     </ResizablePanelGroup>
                 </div>

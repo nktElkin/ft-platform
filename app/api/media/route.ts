@@ -55,12 +55,6 @@ export async function POST(
     }
     if (!courseId) return NextResponse.json({ message: '[MEDIA-UPLOAD] -courseId Invalid request body' }, { status: 400 });
 
-    console.log('>>>>>>>>>payload ', payload);
-    console.log('>>>>>>>>>courseId ', courseId);
-
-    const values = {...payload};
-    // return NextResponse.json({values});
-
     if (!courseId || !payload.courseModuleId) return new NextResponse("Bad request", { status: 400 });
     const { session, currentUser } = await getSession();
     if (!session) return new NextResponse("Unauthorized", { status: 403 });
@@ -68,15 +62,18 @@ export async function POST(
     const hasPermissin = hasPersmissionToEdit(courseCreator?.authorId || null);
     if (!hasPermissin) return new NextResponse("Permission denied", { status: 403 });
 
-
     const response = await db.attachment.create({
       data: {
-        id: values?.id,
-       ...values,
-      }
+        id: payload.id+1, 
+        url: payload.url,
+        altText: payload.altText,
+        description: payload.description,
+        courseModule: {
+          connect: { id: payload.courseModuleId },
+        },
+      },
     });
 
-    console.log('server resp', response);
     return NextResponse.json({response}, { status: 201 });
 
   } catch (error) {

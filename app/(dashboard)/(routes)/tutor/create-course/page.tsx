@@ -42,16 +42,7 @@ export default function CreateCoursePage() {
         try {
             const response = await fetch("/api/courses", { method: "POST", body: JSON.stringify(values) });
             if (!response.ok) throw new Error("Failed to create course");
-            toast.success("Success", {
-                cancel: {
-                    label: 'Undo',
-                    onClick() {
-                        // TODO: implememt undo action
-                        console.log("undo course creating with titile: ", values);
-                    },
-                    actionButtonStyle: {},
-                }
-            });
+            toast.success("Course successfully created");
             const responseData = await response.json();
             if (!responseData.course) throw new Error("Failed to create course");
             router.push(`/tutor/edit-course/${responseData.course.id}`);
