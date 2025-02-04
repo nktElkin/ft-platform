@@ -20,7 +20,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { memo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Category } from '@prisma/client';
 import { DialogTitle } from '@radix-ui/react-dialog';
 
@@ -44,8 +44,9 @@ export const CategoryFilter = ({onSetFilter, onLoading, categories}: CategoryFil
     categoriesList = categories.map((category) => ({
       value: category?.id,
       label: category?.categoryName}));
-    categoriesList.push({value: '', label: 'All categories'})
-  }, [])
+      categoriesList.push({value: '', label: 'All categories'})
+      if(categoriesList.length>0) setSelectedFilter({value: '', label: 'All categories'});
+  }, [categories])
 
 
   // states for funcitionality
@@ -95,7 +96,7 @@ function StatusList({
   onSetFilter: (filter: any) => void
 }) {
   return (
-    <Command className='bg-background'>
+    <Command className='bg-background' defaultValue=''>
       <CommandInput placeholder="Filter categories..." />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>

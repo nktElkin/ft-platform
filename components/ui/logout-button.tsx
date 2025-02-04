@@ -2,12 +2,14 @@
 import { logout } from "@/actions/auth";
 import { Button } from "./button";
 
-const Logout = ()=> {
+
+
+const LogoutBtn = ({className}: { className?: string }) => {
   return (
-    <Button variant='outline' className="" onClick={() => logout()}>
+    <Button tabIndex={0} type="button" role="button" aria-label="Logout from account" variant='outline' className={className} onClick={() => logout()}>
         Logout
     </Button>
   );
 };
 
-export default Logout;
+export default LogoutBtn;

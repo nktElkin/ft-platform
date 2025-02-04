@@ -6,10 +6,12 @@ import Logout from "@/components/ui/logout-button";
 import Image from "next/image";
 import LoginGithub from "@/components/ui/sigin-gitgub";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { getSession } from "@/lib/utils";
+import LogoutBtn from "@/components/ui/logout-button";
 
 
 export async function SidebarContent() {
-  const session = await auth();
+  const { session, currentUser } = await getSession();
   return (
     <div className="flex flex-col justify-between h-full">
       <div className="py-4 flex flex-col space-y-6">
@@ -27,16 +29,16 @@ export async function SidebarContent() {
           <LoginGithub />
         ) : (
           <>
-          <div className="flex items-center gap-4 py-4">
+          <div className="flex items-center mx-auto gap-4 py-4">
             <>
             <Avatar>
-              <AvatarImage src={session?.user?.image || ''} alt="user avatar" />
-              <AvatarFallback>{session?.user?.name}</AvatarFallback>
+              <AvatarImage src={currentUser?.image || ''} alt="user avatar" />
+              <AvatarFallback>{currentUser?.name}</AvatarFallback>
             </Avatar>
             </>
-            {session?.user?.name}
+            {currentUser?.name}
           </div>
-          <Logout />
+          <LogoutBtn className="w-full"/>
           </>
         )}
 

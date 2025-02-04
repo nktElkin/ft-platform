@@ -4,10 +4,13 @@ import {useCallback, useState } from "react";
 import SearchLine from "./search";
 import { CategoryFilter } from "./filter-category";
 import ContentBox from "./content-box";
+import { Category } from "@prisma/client";
 
+interface PageLayoutProps{
+    categories: Category[];
+}
 
-
-const PageLayout = ({categories}:any) => {
+const PageLayout = ({categories}:PageLayoutProps) => {
 
      const [content, setContent] = useState();
         const [isLoading, setIsLoading] = useState(true);
