@@ -1,23 +1,6 @@
 "use client";
 
-
-
-
-
-
-
-
-
-
-
 // FIXME:  payload is null, must be an object ???? сука блять он ебаный объкт
-
-
-
-
-
-
-
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -41,8 +24,14 @@ import { useRouter } from "next/navigation";
 
 // Define the form schema
 const FormSchema = z.object({
-  altText: z.string().min(1, "Alt text is required").max(120, "Alt text cannot exceed 120 characters"),
-  description: z.string().max(200, "Description cannot exceed 200 characters").optional(),
+  altText: z
+    .string()
+    .min(1, "Alt text is required")
+    .max(120, "Alt text cannot exceed 120 characters"),
+  description: z
+    .string()
+    .max(200, "Description cannot exceed 200 characters")
+    .optional(),
   url: z.string().url("Invalid URL"),
 });
 
@@ -51,12 +40,14 @@ interface GCFMediaUploadFormProps {
   courseId: string;
 }
 
-const GCFMediaUploadFormProps = ({courseId, moduleId}: GCFMediaUploadFormProps) => {
-
+const GCFMediaUploadFormProps = ({
+  courseId,
+  moduleId,
+}: GCFMediaUploadFormProps) => {
   const router = useRouter();
   const [fileUrl, setFileUrl] = useState<string | null>(null); // State to store the uploaded file URL
   useEffect(() => {
-    form.setValue("url", fileUrl ? fileUrl : '');
+    form.setValue("url", fileUrl ? fileUrl : "");
   }, [fileUrl]);
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -79,10 +70,10 @@ const GCFMediaUploadFormProps = ({courseId, moduleId}: GCFMediaUploadFormProps) 
     // Prepare the values
     const payload = {
       url: fileUrl,
-      id: fileUrl.split("/").pop()?.split('.').at(0), // Extract the file ID from the URL
+      id: fileUrl.split("/").pop()?.split(".").at(0), // Extract the file ID from the URL
       altText: data.altText,
-      description: data.description || '',
-      courseModuleId: moduleId
+      description: data.description || "",
+      courseModuleId: moduleId,
     };
 
     try {
@@ -94,7 +85,7 @@ const GCFMediaUploadFormProps = ({courseId, moduleId}: GCFMediaUploadFormProps) 
         body: JSON.stringify({ payload, courseId }),
       });
 
-      const data = await response.json()
+      const data = await response.json();
       if (response.ok) {
         form.reset();
         setFileUrl(null);
@@ -150,7 +141,11 @@ const GCFMediaUploadFormProps = ({courseId, moduleId}: GCFMediaUploadFormProps) 
             <FormItem>
               <FormLabel>Alt Text</FormLabel>
               <FormControl>
-                <Input disabled={!fileUrl} placeholder="Enter alt text" {...field} />
+                <Input
+                  disabled={!fileUrl}
+                  placeholder="Enter alt text"
+                  {...field}
+                />
               </FormControl>
               <FormDescription>
                 Provide a brief description of the media for accessibility.
@@ -168,7 +163,11 @@ const GCFMediaUploadFormProps = ({courseId, moduleId}: GCFMediaUploadFormProps) 
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Input disabled={!fileUrl} placeholder="Enter description (optional)" {...field} />
+                <Input
+                  disabled={!fileUrl}
+                  placeholder="Enter description (optional)"
+                  {...field}
+                />
               </FormControl>
               <FormDescription>
                 Provide additional context for the media (optional).
@@ -179,10 +178,12 @@ const GCFMediaUploadFormProps = ({courseId, moduleId}: GCFMediaUploadFormProps) 
         />
 
         {/* Submit Button */}
-        <Button disabled={!fileUrl && isValid && !isSubmitting} type="submit">{isSubmitting ? 'Uploading...' : 'Submit'}</Button>
+        <Button disabled={!fileUrl && isValid && !isSubmitting} type="submit">
+          {isSubmitting ? "Uploading..." : "Submit"}
+        </Button>
       </form>
     </Form>
   );
-}
+};
 
 export default GCFMediaUploadFormProps;

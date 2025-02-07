@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { SingleImageDropzone } from "@/components/image-upload-dropzone";
 import { Button } from "@/components/ui/button";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
@@ -18,81 +18,96 @@ import { imageUrlIsValid } from "@/lib/utils";
 import { ArrowUpFromLine } from "lucide-react";
 
 interface CourseCreationFormProps {
-    initials: any,
-    moduleId: string,
-    isValidImageUrl?: boolean
+  initials: any;
+  moduleId: string;
+  isValidImageUrl?: boolean;
 }
 
 const UploadCourseMediaForm = () => {
-    const [isEditigin, setIsEditing] = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const router = useRouter();
-    const { edgestore } = useEdgeStore();
-    const [progress, setProgress] = useState(0);
+  const [isEditigin, setIsEditing] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
+  const { edgestore } = useEdgeStore();
+  const [progress, setProgress] = useState(0);
 
+  const [file, setFile] = useState<File | null>();
+  const [url, setUrl] = useState<string | null>(null);
 
-    const [file, setFile] = useState<File | null>();
-    const [url, setUrl] = useState<string | null>(null);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!file) return;
 
+    // setIsSubmitting(true);
+    // const uploadOk = await uploadFile(file.name, file)
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!file) return;
+    // // const formData = new FormData();
+    // // formData.append('file', file);
 
-        // setIsSubmitting(true);
-        // const uploadOk = await uploadFile(file.name, file)
+    // // const response = await fetch('/api/googleUpload', {
+    // //     method: 'POST',
+    // //     body: file,
+    // //     headers: {
+    // //         'file-name': file.name,
+    // //         'content-type': file.type,
+    // //     },
+    // // });
 
+    // // const data = await response.json();
+    // // setUrl(data.url);
+    setIsSubmitting(false);
+  };
 
-        // // const formData = new FormData();
-        // // formData.append('file', file);
-
-        // // const response = await fetch('/api/googleUpload', {
-        // //     method: 'POST',
-        // //     body: file,
-        // //     headers: {
-        // //         'file-name': file.name,
-        // //         'content-type': file.type,
-        // //     },
-        // // });
-
-        // // const data = await response.json();
-        // // setUrl(data.url);
-        setIsSubmitting(false);
-    };
-
-
-    return (
-        <div className="flex flex-col space-y-7">
-            <form className="space-y-8" action="api/googleUpload" method="POST" encType="multipart/form-data">
-                <SingleImageDropzone
-                    onChange={(file) => {
-                        setFile(file);
-                        console.log(file);
-                    }}
-                    value={file ? file : undefined}
-                />
-                <Button className="mr-2 font-semibold" type="reset" onClick={() => setFile(null)} variant='outline'>Cancel</Button>
-                {/* <Button className="mr-2 font-semibold" type="submit">Upload</Button> */}
-                <Button type="submit" onClick={async () => {
-                    setIsSubmitting(true);
-                    if (file) {
-                        await fetch('/api/googleUpload', { method: "POST", body: file });
-                        setIsSubmitting(false);
-                    } else {
-                        toast.error('Please select a file to upload')
-                    }
-                }} disabled={!file || isSubmitting}>{isSubmitting ? "Preparing..." : <>Upload <ArrowUpFromLine /></>}</Button>
-            </form>
-        </div>
-    );
-}
+  return (
+    <div className="flex flex-col space-y-7">
+      <form
+        className="space-y-8"
+        action="api/googleUpload"
+        method="POST"
+        encType="multipart/form-data"
+      >
+        <SingleImageDropzone
+          onChange={(file) => {
+            setFile(file);
+            console.log(file);
+          }}
+          value={file ? file : undefined}
+        />
+        <Button
+          className="mr-2 font-semibold"
+          type="reset"
+          onClick={() => setFile(null)}
+          variant="outline"
+        >
+          Cancel
+        </Button>
+        {/* <Button className="mr-2 font-semibold" type="submit">Upload</Button> */}
+        <Button
+          type="submit"
+          onClick={async () => {
+            setIsSubmitting(true);
+            if (file) {
+              await fetch("/api/googleUpload", { method: "POST", body: file });
+              setIsSubmitting(false);
+            } else {
+              toast.error("Please select a file to upload");
+            }
+          }}
+          disabled={!file || isSubmitting}
+        >
+          {isSubmitting ? (
+            "Preparing..."
+          ) : (
+            <>
+              Upload <ArrowUpFromLine />
+            </>
+          )}
+        </Button>
+      </form>
+    </div>
+  );
+};
 
 export default UploadCourseMediaForm;
-
-
-
-
-
 
 // export default function UploadForm() {
 //   const [file, setFile] = useState<File | null>(null);

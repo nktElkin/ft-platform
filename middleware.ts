@@ -1,16 +1,14 @@
 import { auth } from "@/auth";
-import { request } from "http"
-import { NextResponse } from "next/server"
+import { request } from "http";
+import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 // export { auth as middleware } from "@/auth"
-
 
 // export default async function middleware(request: NextRequest) {
 //     const session = await auth();
 //     return NextResponse.next();
 // }
-
 
 const protectedRoutes = ["/tutor"]; //PROTECTED ROUTES
 
@@ -31,7 +29,7 @@ export default async function middleware(request: NextRequest) {
   // }
 
   const isProtected = protectedRoutes.some((route) =>
-    request.nextUrl.pathname.startsWith(route)
+    request.nextUrl.pathname.startsWith(route),
   );
 
   if (!session && isProtected) {

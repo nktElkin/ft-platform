@@ -4,7 +4,6 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { EdgeStoreProvider } from "@/lib/edgestore";
 
-
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -34,14 +33,10 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <>
-       <EdgeStoreProvider>
-          {children}
-        </EdgeStoreProvider>
-          <Toaster/>
+          <EdgeStoreProvider>{children}</EdgeStoreProvider>
+          <Toaster />
         </>
-        
-      </body> 
+      </body>
     </html>
   );
 }
-  

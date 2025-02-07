@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Check, ChevronsUpDown } from "lucide-react"
+import * as React from "react";
+import { Check, ChevronsUpDown } from "lucide-react";
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -12,23 +12,29 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@/components/ui/command"
+} from "@/components/ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 
 interface SelectBoxProps {
-    list: {label: string; value: string}[];
-    value?: string;
-    defaultValue?: string;
-    onChange?: (value: string) => void;
-    listTheme?: string;
+  list: { label: string; value: string }[];
+  value?: string;
+  defaultValue?: string;
+  onChange?: (value: string) => void;
+  listTheme?: string;
 }
 
-export function SelectBox({list, value, onChange, defaultValue, listTheme = ''}: SelectBoxProps) {
-  const [open, setOpen] = React.useState(false)
+export function SelectBox({
+  list,
+  value,
+  onChange,
+  defaultValue,
+  listTheme = "",
+}: SelectBoxProps) {
+  const [open, setOpen] = React.useState(false);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -41,7 +47,9 @@ export function SelectBox({list, value, onChange, defaultValue, listTheme = ''}:
         >
           {value
             ? list.find((listItem) => listItem.value === value)?.label
-            : defaultValue? defaultValue : `Select ${listTheme} item...`}
+            : defaultValue
+              ? defaultValue
+              : `Select ${listTheme} item...`}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -56,14 +64,15 @@ export function SelectBox({list, value, onChange, defaultValue, listTheme = ''}:
                   key={listItem.value}
                   value={listItem.value}
                   onSelect={() => {
-                    onChange && onChange(listItem.value === value ? '' : listItem.value)
-                    setOpen(false)
+                    onChange &&
+                      onChange(listItem.value === value ? "" : listItem.value);
+                    setOpen(false);
                   }}
                 >
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4",
-                      value === listItem.value ? "opacity-100" : "opacity-0"
+                      value === listItem.value ? "opacity-100" : "opacity-0",
                     )}
                   />
                   {listItem.label}
@@ -74,5 +83,5 @@ export function SelectBox({list, value, onChange, defaultValue, listTheme = ''}:
         </Command>
       </PopoverContent>
     </Popover>
-  )
+  );
 }

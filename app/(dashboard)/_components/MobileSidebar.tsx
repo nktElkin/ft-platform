@@ -1,28 +1,27 @@
 import {
-    Sheet,
-    SheetContent,
-    SheetDescription,
-    SheetHeader,
-    SheetTitle,
-    SheetTrigger,
-  } from "@/components/ui/sheet"
-import { Sidebar } from "./Sidebar"
-import { SidebarContent } from "./Sidebar-content"
-import { AlignJustify } from "lucide-react"
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Sidebar } from "./Sidebar";
+import { SidebarContent } from "./Sidebar-content";
+import { AlignJustify } from "lucide-react";
 
 export const MobileSidebarar = () => {
-    return(
-      <div className="md:hidden">
-        <Sheet>
-          <SheetTitle className="hidden">Menu</SheetTitle>
+  return (
+    <div className="md:hidden">
+      <Sheet>
+        <SheetTitle className="hidden">Menu</SheetTitle>
         <SheetTrigger>
-            <AlignJustify />
+          <AlignJustify />
         </SheetTrigger>
-        <SheetContent className="p-0" side='right'>
-            <SidebarContent/>
+        <SheetContent className="p-0" side="right">
+          <SidebarContent />
         </SheetContent>
       </Sheet>
-
-      </div>
-    )
-}
+    </div>
+  );
+};

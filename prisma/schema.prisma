@@ -23,7 +23,7 @@ model User {
   hashedPassword String?
   emailVerified DateTime?
   image         String?
-  sory         String?
+  story         String? @default("")
 
   accounts      Account[]
   sessions      Session[]

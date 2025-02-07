@@ -1,24 +1,28 @@
-@import url('https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Open+Sans:ital,wdth,wght@0,75..100,300..800;1,75..100,300..800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Open+Sans:ital,wdth,wght@0,75..100,300..800;1,75..100,300..800&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
-html, 
-:root, 
-body{
+html,
+:root,
+body {
   hight: 100%;
 }
 
 body {
   font-family: "Open Sans", Helvetica, sans-serif;
-  /* font-family: "Funnel Display", Helvetica, sans-serif; */;
+  /* font-family: "Funnel Display", Helvetica, sans-serif; */
   font-size: 1rem; /* 16px */
   line-height: 1.5rem; /* 24px */
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
 }
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 700;
 }
 h1 {
@@ -157,20 +161,32 @@ h2 {
   .btn-primary {
     @apply py-2 px-5 bg-violet-500 text-white font-semibold rounded-full shadow-md hover:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 focus:ring-opacity-75;
   }
-  .container{
+  .container {
     @apply h-auto w-auto rounded-md border border-input bg-transparent p-3 shadow-sm md:text-sm transition duration-300 ease-in-out;
     &:hover {
       @apply shadow-2xl;
     }
   }
+  .container-flat{
+    @apply h-auto w-auto rounded-md border border-input bg-transparent p-3 shadow-sm md:text-sm
+  }
   .wrapper {
     padding: 1em;
     @media screen and (min-width: 768px) {
-      padding: 2em 1.25em auto;
+      /* padding: 2em 1.25em auto; */
+      padding: 1.25em 1em;
     }
   }
+  .input{
+    @apply flex w-full rounded-md border border-input bg-transparent px-3 items-center text-base shadow-sm md:text-sm 
+  }
+  .input-line{
+    @apply input overflow-hidden h-9
+  }
+  .input-area{
+    @apply input h-fit min-h-9
+  }
 }
-
 
 /* 
 accent element color: #635bff

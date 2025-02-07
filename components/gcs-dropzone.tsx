@@ -1,23 +1,23 @@
-'use client'
-import { generateId } from '@/lib/utils';
-import { SingleObjectDopzone } from './image-upload-dropzone';
+"use client";
+import { generateId } from "@/lib/utils";
+import { SingleObjectDopzone } from "./image-upload-dropzone";
 
 interface DropzoneProps {
   onUploadSuccess: (objectData: string) => void;
 }
 
-const GCSDropzone = ({ onUploadSuccess}: DropzoneProps) => {
+const GCSDropzone = ({ onUploadSuccess }: DropzoneProps) => {
   const gcsUpload = async (file: File | null) => {
     if (!file) return;
 
-    const fileExtension = file.name.split('.').pop(); // get extension
+    const fileExtension = file.name.split(".").pop(); // get extension
     const newFileName = `${generateId()}.${fileExtension}`; // combine UUID with extension
     const renamedFile = new File([file], newFileName, { type: file.type });
     const formData = new FormData();
-    formData.append('file', renamedFile);
+    formData.append("file", renamedFile);
 
-    const response = await fetch('/api/gcs', {
-      method: 'POST',
+    const response = await fetch("/api/gcs", {
+      method: "POST",
       body: formData,
     });
 
@@ -28,23 +28,20 @@ const GCSDropzone = ({ onUploadSuccess}: DropzoneProps) => {
       onUploadSuccess(decodeURIComponent(data.url));
       // console.log('onSetObjectUrl:', decodeURIComponent(data.url));
     } else {
-      console.error('Upload failed:', response.statusText);
+      console.error("Upload failed:", response.statusText);
     }
-  }
-
+  };
 
   return (
-        <SingleObjectDopzone
-          onChange={(file) => {
-            gcsUpload(file || null);
-          }}
-        />
+    <SingleObjectDopzone
+      onChange={(file) => {
+        gcsUpload(file || null);
+      }}
+    />
   );
-}
+};
 
 export default GCSDropzone;
-
-
 
 // const onDrop = useCallback(async (acceptedFiles: File[]) => {
 //   const file = acceptedFiles[0];
@@ -68,9 +65,7 @@ export default GCSDropzone;
 //   }
 // }, []);
 
-
 // const { getRootProps, getInputProps } = useDropzone({ onDrop });
-
 
 // <div className={className}>
 // <div {...getRootProps()} style={{ border: '2px dashed #ccc', padding: '20px', textAlign: 'center' }}>
@@ -78,7 +73,6 @@ export default GCSDropzone;
 //   <p>Drag & drop a file here, or click to select one</p>
 // </div>
 // </div>
-
 
 // const onRemove = async () => {
 //   if(!objectUrl) return;
@@ -104,12 +98,13 @@ export default GCSDropzone;
 //   }
 // };
 
-
-{/* {objectUrl && (
+{
+  /* {objectUrl && (
   <div>
     <p>File uploaded successfully!</p>
     <a href={objectUrl} target="_blank" rel="noopener noreferrer">
       View File
     </a>
   </div>
-)} */}
+)} */
+}
