@@ -8,6 +8,10 @@ import LoginGithub from "@/components/ui/sigin-gitgub";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getSession } from "@/lib/utils";
 import LogoutBtn from "@/components/ui/logout-button";
+import { Suspense } from "react";
+import { UserRole } from "@prisma/client";
+
+
 
 export async function SidebarContent() {
   const { session, currentUser } = await getSession();
@@ -16,12 +20,11 @@ export async function SidebarContent() {
       <div className="py-4 flex flex-col space-y-6">
         <Logo />
         <nav role="navigation" aria-label="Sidebar navigation">
-          <SidebarRoutes />
+            <SidebarRoutes userRole={currentUser?.role ||"STUDENT"} />
         </nav>
-        <div></div>
       </div>
 
-      <div className="flex flex-col px-4 mb-4">
+      <section className="flex flex-col px-4 mb-4">
         {!session?.user ? (
           <LoginGithub />
         ) : (
@@ -41,7 +44,7 @@ export async function SidebarContent() {
             <LogoutBtn className="w-full" />
           </>
         )}
-      </div>
+      </section>
     </div>
   );
 }

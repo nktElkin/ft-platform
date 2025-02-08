@@ -8,6 +8,8 @@ export const generateStaticParams = async () => {
   }));
 };
 
+//FIXME : moduleId is undefined - fix progress
+
 const ModulIdPage = ({ params }: { params: Promise<{ moduleId: string }> }) => {
   return <></>;
 };

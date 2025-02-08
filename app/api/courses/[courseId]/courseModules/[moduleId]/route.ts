@@ -75,7 +75,7 @@ export async function DELETE(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { courseId: string; moduleId: string } },
+  { params }: { params: Promise<{ courseId: string; moduleId: string }> },
 ) {
   try {
     const session = await auth();
@@ -90,8 +90,8 @@ export async function PATCH(
     if (user?.role === "STUDENT")
       return new NextResponse("Permission denied", { status: 403 });
 
-    const courseId = params.courseId;
-    const moduleId = params.moduleId;
+    const courseId = (await params).courseId;
+    const moduleId = (await params).moduleId;
 
     const values = await req.json();
 

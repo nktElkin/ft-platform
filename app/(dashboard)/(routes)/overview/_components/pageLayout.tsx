@@ -1,11 +1,10 @@
 "use client";
 
-import { Suspense, useCallback, useState } from "react";
+import {useCallback, useState } from "react";
 import SearchLine from "./search";
 import { CategoryFilter } from "./filter-category";
 import ContentBox from "./content-box";
 import { Category } from "@prisma/client";
-import { Skeleton } from "@/components/ui/skeleton";
 
 interface PageLayoutProps {
   categories: Category[];

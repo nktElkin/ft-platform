@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard } from "lucide-react";
+import Link from "next/link";
 
 interface SidebarItemProps {
   icon: any;
@@ -19,29 +19,23 @@ export const SidebarItem = ({
   const pathname = usePathname();
   const router = useRouter();
 
-  // check e cases for routes - root, ./2nd level, ./.../3rd level
+
   const isActive =
     (pathname === "/" && href === "/") ||
     pathname === href ||
-    pathname?.startsWith(`${href}/`);
+    (pathname?.startsWith(`${href}/`) && href !== "/tutor");
 
-  // redirect to href path
-  const onClick = () => {
-    router.push(href);
-  };
 
   return (
-    <li className="" role="menuitem">
+    <li role="link">
+      <Link href={href} className="w-auto h-auto">
       <button
         // labels
         aria-current={isActive ? "page" : undefined}
         aria-label={`Navigate to ${label}`}
-        //styles
-        type="button"
-        onClick={onClick}
         className={cn(
-          "flex justify-center md:justify-normal md:pl-4 items-center w-full text-base font-medium hover:bg-gray-200 transition-all py-3",
-          isActive && "font-semibold bg-gray-200 md:border-r-4 border-white",
+          "flex justify-center md:justify-normal md:pl-4 items-center w-full text-base font-medium hover:bg-gray-200 transform ease-in-out duration-150 py-3",
+          isActive && "font-semibold bg-white/70 md:border-r-4 ",
         )}
       >
         <div className="flex items-center gap-x-2" role="presentation">
@@ -49,6 +43,7 @@ export const SidebarItem = ({
           <span>{label}</span>
         </div>
       </button>
+      </Link>
     </li>
   );
 };

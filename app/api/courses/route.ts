@@ -49,20 +49,6 @@ export async function POST(req: Request) {
   }
 }
 
-// export async function GET (req: Request, res: Response) {
-//     try{
-//         const courses = await db.course.findMany({
-//             where: {
-//                 isPublished: true
-//             }
-//         });
-//         return new NextResponse({courses});
-//     } catch (error) {
-//         console.error(error);
-//         return new NextResponse("Failed to get courses", { status: 500 });
-//     }
-// }
-
 export async function GET(req: NextRequest) {
   if (!req) return new NextResponse("Bad request", { status: 400 });
   try {

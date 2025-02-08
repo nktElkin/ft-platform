@@ -6,13 +6,16 @@ import {
 } from "@/components/ui/accordion";
 import Indicator from "@/components/ui/indicator";
 import { CourseModule, User } from "@prisma/client";
+import { CircleCheck, CircleCheckBig } from "lucide-react";
 
 interface ModulesTableProps {
   modules: CourseModule[];
   currentUser: User | null;
+  completedModules: CourseModule[] | null;
 }
 
-const ModulesTable = ({ modules, currentUser }: ModulesTableProps) => {
+
+const ModulesTable = ({ modules, currentUser, completedModules }: ModulesTableProps) => {
   if (!modules.length)
     return (
       <>
@@ -46,6 +49,7 @@ const ModulesTable = ({ modules, currentUser }: ModulesTableProps) => {
                 <span className="sr-only">
                   {!module.isPublished ? "draft" : "published"} module
                 </span>
+
                 <span>
                   {currentUser?.role !== "STUDENT" && (
                     <span className="inline-block mr-3">
@@ -55,6 +59,7 @@ const ModulesTable = ({ modules, currentUser }: ModulesTableProps) => {
                       />
                     </span>
                   )}
+                  {completedModules?.some((m) => m.id === module.id) && <CircleCheck className="inline size-4 mr-2"/>}
                   <span className="inline-block">{module?.title}</span>
                 </span>
               </AccordionTrigger>

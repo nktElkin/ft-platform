@@ -58,12 +58,14 @@ const setItemsArray = (
   overview: string,
   course: string,
   module: string,
+  settings: string,
 ): [ItemInterface[], ItemInterface[]] => {
   const items: ItemInterface[] = [];
   items.push({ href: "/", label: "Home" });
   if (overview) items.push({ href: "/overview", label: "Overview" });
   if (course) items.push({ href: course, label: "Course" });
   if (module) items.push({ href: module, label: "Module" });
+  if (settings) items.push({href: "/overview", label: "Overview" },{ href: '/settings', label: "Settings" });
   const hiddenItems: ItemInterface[] = [];
   const visibleItems: ItemInterface[] = [];
 
@@ -87,18 +89,13 @@ const NavigationBreadcrumbs = () => {
     getPathWithNext(pathname, "overview"),
     getPathWithNext(pathname, "course"),
     getPathWithNext(pathname, "module"),
+    getPathWithNext(pathname, "settings"),
   );
 
   return (
     <nav aria-description="Breadcrumb navigation" aria-label="Breadcrumb">
       <Breadcrumb>
         <BreadcrumbList>
-          {/* <BreadcrumbItem className="hover:underline hover:text-zinc-700">
-                    <BreadcrumbLink href={items[0].href}>{items[0].label}</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator/> */}
-
-          {/* hidden breadcrumb */}
           {hiddenItems?.length ? (
             <>
               <BreadcrumbItem className="first:bg-inherit first:z-10 first:opacity-100">
@@ -182,30 +179,6 @@ const NavigationBreadcrumbs = () => {
             : null}
         </BreadcrumbList>
       </Breadcrumb>
-
-      {/* 
-        {isMobile ? <>
-        </> : <>
-            <Breadcrumb>
-                <BreadcrumbList>
-                    <BreadcrumbItem className="hover:underline hover:text-zinc-700">
-                        <BreadcrumbLink href="/">Home</BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator><span>|</span></BreadcrumbSeparator>
-                    <BreadcrumbItem>
-                        <BreadcrumbLink href="/overview">Overview</BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                        <BreadcrumbLink href={getPathWithNext(pathname, 'course')}>{course.title}</BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem className="">
-                        <BreadcrumbLink href={getPathWithNext(pathname, 'module')}>{module.title}</BreadcrumbLink>
-                    </BreadcrumbItem>
-                </BreadcrumbList>
-            </Breadcrumb>
-        </>} */}
     </nav>
   );
 };

@@ -1,12 +1,10 @@
-import InputCover from "@/components/ui/input-cover";
 import { Skeleton } from "@/components/ui/skeleton";
 import { db } from "@/lib/db";
 import { getSession } from "@/lib/utils";
 import { redirect } from 'next/navigation';
 import { Suspense } from "react";
-import FieldContainer from "./_components/field-container";
 import { Label } from "@/components/ui/label";
-import EditUserNameForm from "./_components/edit-name-form";
+import EditUserDataForm from "./_components/edit-name-form";
 
 
 const SkeletonLoader = () => {
@@ -41,28 +39,25 @@ const UserSettingsPage = async () => {
         return <div>User not found</div>;
     }
 
+    const userRole = user?.role === 'STUDENT' ? 'Student' : user.role === 'TUTOR' ? 'Tutor' : 'Root';
+
     return (
         <Suspense fallback={<SkeletonLoader />}>
-            <div className="w-full sm:w-1/2 h-full mx-auto flex flex-col space-y-4">
+            <div className="w-full sm:w-1/3 h-full mx-auto flex flex-col space-y-4">
                 <section className="*:mb-2">
                     <h3>Public data</h3>
-                    {/* <UserImageEditForm/> */}
-                    <EditUserNameForm currentUser={currentUser}/>
-                    {/* <UserStoryEditForm/> */}
-                    User image
-                    User name
-                    User story
+                    <EditUserDataForm currentUser={currentUser}/>
                 </section>
                 <hr />
                 <section className="*:mb-2">
                     <h3>Hidden data</h3>
                     <div>
-                        <Label>user email</Label>
+                        <Label>Email</Label>
                         <div aria-disabled='true' aria-description="user email, cannot be chnaged, hidded data" className="input-line text-zinc-700 cursor-not-allowed">{currentUser.email}</div>
                     </div>
                     <div>
-                        <Label>user role</Label>
-                        <div aria-disabled='true' aria-description="user role, cannot be chnaged only by administrator, hidded data" className="input-line text-zinc-700 cursor-not-allowed">{currentUser.role}</div>
+                        <Label>Role</Label>
+                        <div aria-disabled='true' aria-description="user role, cannot be chnaged only by administrator, hidded data" className="input-line text-zinc-700 cursor-not-allowed">{currentUser.role === 'STUDENT' ? 'Stundent' :'Tutor'}</div>
                     </div>
                 </section>
             </div>

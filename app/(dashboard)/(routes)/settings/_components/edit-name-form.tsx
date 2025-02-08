@@ -27,7 +27,7 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-const EditUserNameForm = ({ currentUser }: {currentUser:User}) => {
+const EditUserDataForm = ({ currentUser }: {currentUser:User}) => {
   const router = useRouter();
   const {name, id} = currentUser;
   const story = currentUser.story || "";
@@ -126,4 +126,4 @@ const EditUserNameForm = ({ currentUser }: {currentUser:User}) => {
   );
 };
 
-export default EditUserNameForm;
+export default EditUserDataForm;
