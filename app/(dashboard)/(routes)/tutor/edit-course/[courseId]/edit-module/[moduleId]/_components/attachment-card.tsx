@@ -1,12 +1,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import RemoveCourseModuleBtn from "@/components/ui/cross-btn";
 import { Label } from "@/components/ui/label";
+import { Attachment } from "@prisma/client";
 import { CircleX, Link } from "lucide-react";
 import { toast } from "sonner";
 
-const AttachmentCard = ({ attachment }: any) => {
+const AttachmentCard = ({ attachment }:{attachment : Attachment}) => {
   return (
     <div
       className="container text-base flex flex-col sm:flex-row sm:justify-between sm:items-center"
@@ -25,7 +25,7 @@ const AttachmentCard = ({ attachment }: any) => {
           variant="link"
           className="m-0 p-0"
           onClick={() => {
-            navigator.clipboard.writeText(attachment.url);
+            navigator.clipboard.writeText(`![${attachment.description || 'image'}](${attachment.url} "${attachment.altText}")`);
             toast.info("Link copied to clipboard");
           }}
         >

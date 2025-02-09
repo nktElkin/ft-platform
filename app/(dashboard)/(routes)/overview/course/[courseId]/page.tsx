@@ -9,22 +9,13 @@ import UserCard from "./_components/user-card";
 import CheckInCourseCard from "./_components/checkin-course-card";
 import { Course, CourseModule, User, UserProgress } from "@prisma/client";
 import NotFound from "@/app/not-found";
-import CompletedCourseCongratsCard from "./_components/complered-course-congrats-card";
-
-//TODO: migrate t ISR
+import CompletedCourseCongratsCard from "./_components/completed-course-congrats-card";
 
 export const revalidate = 60; // next will start revalidation process every 60 seconds
 
 export const dynamicParams = true; // if revalidation wont finished yet, next will render page on demand
 
 
-const getProgressPointModuleUrl = async (progress : UserProgress[] | [], course:Course| null, modules:CourseModule[] | null):Promise<string> => {
-  if (!course || !modules) return '';
-  // return course route to enroll
-  if (!progress.length) return `/overview/course/${course?.id}`;
-  const notDoneModules = modules.filter((module) => progress.some((p) => p.courseModuleId === module.id && !p.isDone));
-  return `/overview/course/${course?.id}/module/${notDoneModules[0]?.id}`;
-}
 
 // generateStaticParams for dynamical routes
 export const generateStaticParams = async () => {
@@ -33,6 +24,14 @@ export const generateStaticParams = async () => {
     courseId: course.id,
   }));
 };
+
+const getProgressPointModuleUrl = async (progress : UserProgress[] | [], course:Course| null, modules:CourseModule[] | null):Promise<string> => {
+  if (!course || !modules) return '';
+  // return course route to enroll
+  if (!progress.length) return `/overview/course/${course?.id}`;
+  const notDoneModules = modules.filter((module) => progress.some((p) => p.courseModuleId === module.id && !p.isDone));
+  return `/overview/course/${course?.id}/module/${notDoneModules[0]?.id}`;
+}
 
 const CourseIdPage = async ({
   params,
@@ -125,8 +124,6 @@ const CourseIdPage = async ({
           {progressValue !==100 
           ? <CheckInCourseCard progress={progressValue} redirectHref={moduleUrl}/>
           : <CompletedCourseCongratsCard/>}
-
-<CompletedCourseCongratsCard/>
         </section>
       </div>
     </Suspense>

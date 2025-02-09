@@ -101,7 +101,6 @@ const TextEditSection = ({
         {isLoading ? <>Loading</> : "Upload"}
       </Button>
     </form>
-    // <MDEditor.Markdown source={value} style={{ whiteSpace: 'pre-wrap', color: '#333', backgroundColor: 'transparent' }}/>
   );
 };
 

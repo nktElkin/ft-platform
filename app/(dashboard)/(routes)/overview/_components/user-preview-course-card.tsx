@@ -31,7 +31,7 @@ const CoursePreviewCard = ({
           <div className="text-start">
             <h3 className="text-lg font-semibold mb-2">{course.title}</h3>
             <p className="text-sm text-zinc-500 mb-2">
-              {!course?.description ? (
+              {!course?.description?.length ? (
                 <>
                   Hmmm, not alot
                   <br />
@@ -40,7 +40,7 @@ const CoursePreviewCard = ({
               ) : course?.description.length > 90 ? (
                 `${course?.description?.slice(0, 90)}...`
               ) : (
-                `${!course?.description}`
+                `${course?.description}`
               )}
             </p>
           </div>

@@ -35,91 +35,10 @@ export async function POST(
         courseModuleId: firstModule.id,
       }
     });
-    if (!response) return NextResponse.json({ message: "[COURSES/ENROL-POST] Failed to create progress" }, { status: 500 });
+    if (!response) return NextResponse.json({ message: "[COURSES/FINISG-POST] Failed to create progress" }, { status: 500 });
     
     return NextResponse.json({ response }, { status: 200 });
   } catch (error) {
     return new NextResponse("Failed to create course progress", { status: 500 });
-  }
-}
-
-export async function PUT(
-  req: Request,
-  { params }: { params: { courseId: string } },
-) {
-  try {
-    const { session, currentUser } = await getSession();
-    if (!session || !currentUser) return new NextResponse("Unauthorized", { status: 401 });
-    const { courseId } = params;
-    const {moduleId} = await req.json();
-    if (!courseId || !moduleId)
-      return NextResponse.json(
-        { message: "[COURSES/ENROL-PUT] Invalid course id, or no request parameters" },
-        { status: 400 },
-      );
-
-    const course = await db.course.findUnique({ where: { id: courseId } });
-    if (!course) return NextResponse.json({ message: "[COURSES/ENROL-PUT] Course not found" }, { status: 404 });
-
-    const modules = await db.courseModule.findMany({ where: { courseId: courseId } });
-    if (!modules) return NextResponse.json({ message: "[COURSES/ENROL-PUT] Course is blank" }, { status: 404 });
-
-    const progress = await db.userProgress.findMany({ where: { userId: currentUser?.id, courseModuleId: { in: modules.map((module) => module.id) } }, orderBy: { updatedAt: "desc" } });
-    if (!progress.length) return NextResponse.json({ message: "[COURSES/ENROL-PUT] Progress doesn't exist" }, { status: 404 });
-
-    const response = await db.userProgress.create({
-      data: {
-        userId: currentUser?.id,
-        courseModuleId: moduleId,
-      }
-    });
-    if (!response) return NextResponse.json({ message: "[COURSES/ENROL-PUT] Failed to create progress" }, { status: 500 });
-
-    return NextResponse.json({ response }, { status: 200 });
-  } catch (error) {
-    return new NextResponse("Failed to update course progress", { status: 500 });
-  }
-}
-
-export async function PATCH(
-  req: Request,
-  { params }: { params: { courseId: string } },
-) {
-  try {
-    const { session, currentUser } = await getSession();
-    if (!session || !currentUser) return new NextResponse("Unauthorized", { status: 401 });
-    const { courseId } = params;
-    const {moduleId} = await req.json();
-    if (!courseId || !moduleId)
-      return NextResponse.json(
-        { message: "[COURSES/ENROL-PATCH] Invalid course id, or no request parameters" },
-        { status: 400 },
-      );
-
-    const course = await db.course.findUnique({ where: { id: courseId } });
-    if (!course) return NextResponse.json({ message: "[COURSES/ENROL-PATCH] Course not found" }, { status: 404 });
-
-    const modules = await db.courseModule.findMany({ where: { courseId: courseId } });
-    if (!modules) return NextResponse.json({ message: "[COURSES/ENROL-PATCH] Course is blank" }, { status: 404 });
-
-    const progress = await db.userProgress.findMany({ where: { userId: currentUser?.id, courseModuleId: { in: modules.map((module) => module.id) } }, orderBy: { updatedAt: "desc" } });
-    if (!progress.length) return NextResponse.json({ message: "[COURSES/ENROL-PATCH] Progress doesn't exist" }, { status: 404 });
-
-    const response = await db.userProgress.update({
-      where: {
-        userId_courseModuleId: {
-          userId: currentUser?.id,
-          courseModuleId: moduleId,
-        },
-      },
-      data: {
-        isDone: true,
-      }
-    });
-    if (!response) return NextResponse.json({ message: "[COURSES/ENROL-PATCH] Failed to update progress" }, { status: 500 });
-
-    return NextResponse.json({ response }, { status: 200 });
-  } catch (error) {
-    return new NextResponse("Failed to update course progress", { status: 500 });
   }
 }
