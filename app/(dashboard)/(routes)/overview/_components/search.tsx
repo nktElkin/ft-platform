@@ -20,7 +20,6 @@ const SearchLine = memo(function Searchline({
   const doSearch = async (query: string) => {
     onLoading(true);
     try {
-      console.log(query);
       const response = await fetch(`/api/courses?query=${query}`, {
         method: "GET",
       });

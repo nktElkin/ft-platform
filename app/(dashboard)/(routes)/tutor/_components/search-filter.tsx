@@ -17,37 +17,35 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useEffect, useState } from "react";
-import { Category } from "@prisma/client";
 import { DialogTitle } from "@radix-ui/react-dialog";
 
-type Filter = {
-  value: string;
+export type Filter = {
+  value: string | boolean;
   label: string;
 };
 
-let categoriesList: Filter[] = [];
+export type FilterVariant = 'category' | 'status';
 
-interface CategoryFilterProps {
-  onSetFilter: (filter: { value: string; label: string } | null) => void;
-  onLoading: (loading: boolean) => void;
-  categories: Category[];
+interface SearchFilterProps {
+  onSetFilter: (filter: { variant : FilterVariant , value: string; label: string } | null) => void;
+  onLoading?: (loading: boolean) => void;
+  filtersList: Filter[];
+  filterLabel: string;
+  filterVariant: FilterVariant;
 }
 
-export const CategoryFilter = ({
+export const SearchFilter = ({
   onSetFilter,
   onLoading,
-  categories,
-}: CategoryFilterProps) => {
-  // data for content
+  filtersList,
+  filterLabel,
+  filterVariant
+}: SearchFilterProps) => {
+  
+    // data for content
   useEffect(() => {
-    categoriesList = categories.map((category) => ({
-      value: category?.id,
-      label: category?.categoryName,
-    }));
-    categoriesList.push({ value: "", label: "All categories" });
-    if (categoriesList.length > 0)
-      setSelectedFilter({ value: "", label: "All categories" });
-  }, [categories]);
+    filtersList.unshift({ value: "", label: "all" }); // adding reset filter
+  }, [filtersList]);
 
   // states for funcitionality
   const [open, setOpen] = useState(false);
@@ -59,14 +57,17 @@ export const CategoryFilter = ({
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button variant="outline" className="w-fit justify-start">
-            {selectedFilter ? <>{selectedFilter.label}</> : <>category</>}
+            {selectedFilter ? <>{selectedFilter.label.toLowerCase()}</> : <>{filterLabel}</>}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-fit p-0" align="start">
-          <StatusList
+          <FiltersListUI
             setOpen={setOpen}
             setSelectedFilter={setSelectedFilter}
             onSetFilter={onSetFilter}
+            filtersList={filtersList}
+            filterLabel={filterLabel || ''}
+            filterVariant={filterVariant || 'category'}
           />
         </PopoverContent>
       </Popover>
@@ -77,16 +78,19 @@ export const CategoryFilter = ({
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button variant="outline" className="w-fit justify-start">
-          {selectedFilter ? <>{selectedFilter.label}</> : <>category</>}
+          {selectedFilter ? <>{selectedFilter.label.toLowerCase()}</> : <>{filterLabel}</>}
         </Button>
       </DrawerTrigger>
       <DrawerContent>
         <DialogTitle className="hidden">Filter by status</DialogTitle>
         <div className="mt-4 border-t">
-          <StatusList
+          <FiltersListUI
             setOpen={setOpen}
             setSelectedFilter={setSelectedFilter}
             onSetFilter={onSetFilter}
+            filtersList={filtersList}
+            filterLabel={filterLabel || ''}
+            filterVariant={filterVariant || 'category'}
           />
         </div>
       </DrawerContent>
@@ -94,37 +98,39 @@ export const CategoryFilter = ({
   );
 };
 
-function StatusList({
+function FiltersListUI({
   setOpen,
   setSelectedFilter,
   onSetFilter,
+  filtersList,
+  filterLabel,
+  filterVariant,
 }: {
   setOpen: (open: boolean) => void;
   setSelectedFilter: (status: Filter | null) => void;
-  onSetFilter: (filter: any) => void;
+  onSetFilter: (filter: { variant : FilterVariant , value: string; label: string } | null) => void;
+  filtersList : Filter[];
+  filterLabel: string;
+  filterVariant: FilterVariant;
 }) {
   return (
     <Command className="bg-background" defaultValue="">
-      <CommandInput placeholder="Filter categories..." />
+      <CommandInput placeholder={`Filter ${filterLabel}`} />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup>
-          {categoriesList.map((status: any) => (
+          {filtersList.map((status: any) => (
             <CommandItem
-              key={status.value}
-              value={status.value}
-              onSelect={(value) => {
-                setSelectedFilter(
-                  categoriesList.find((category) => category.value === value) ||
-                    null,
-                );
-                onSetFilter(
-                  categoriesList.find((category) => category.value === value),
-                );
-                setOpen(false);
-              }}
-            >
-              {status.label}
+            key={status.value}
+            value={status.value}
+            onSelect={(value) => {
+              const selected = filtersList.find((filter) => filter.value === value) || null;
+              setSelectedFilter(selected);
+              onSetFilter({variant: filterVariant, value: value, label: selected?.label || ''});
+              setOpen(false);
+            }}
+          >
+              {status.label.toLowerCase()}
             </CommandItem>
           ))}
         </CommandGroup>

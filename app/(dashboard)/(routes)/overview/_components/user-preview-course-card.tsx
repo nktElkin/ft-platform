@@ -4,12 +4,12 @@ import Link from "next/link";
 
 interface CoursePreviewCardProps {
   course: Course;
-  courseCategory?: string;
+  courseCategoryName?: string;
 }
 
 const CoursePreviewCard = ({
   course,
-  courseCategory = "Uncategorized",
+  courseCategoryName = "Uncategorized",
 }: CoursePreviewCardProps) => {
   return (
     <Link
@@ -47,7 +47,7 @@ const CoursePreviewCard = ({
           <IndicatorsBlock
             type="course"
             object={course}
-            categoryName={courseCategory}
+            categoryName={courseCategoryName}
           />
         </div>
       </div>

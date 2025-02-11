@@ -11,15 +11,15 @@ function LoginGithubHandler() {
   }
 }
 
-const LoginGithub = () => {
+const LoginGithubBtn = () => {
   return (
     <Button
       onClick={LoginGithubHandler}
-      className="gap-4  hover:cursor-pointer mt-6 bg-black rounded-md p-4 flex justify-center items-center"
+      className="gap-4 hover:cursor-pointer mt-6 bg-black rounded-md p-4 flex justify-center items-center"
     >
       Login with Github
     </Button>
   );
 };
 
-export default LoginGithub;
+export default LoginGithubBtn;

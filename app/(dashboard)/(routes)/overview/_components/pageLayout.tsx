@@ -2,9 +2,10 @@
 
 import {useCallback, useState } from "react";
 import SearchLine from "./search";
-import { CategoryFilter } from "./filter-category";
 import ContentBox from "./content-box";
 import { Category } from "@prisma/client";
+import { FilterVariant, SearchFilter } from "../../tutor/_components/search-filter";
+import { formatCategoriesFilterList } from "../../tutor/_components/tutor-page-layout";
 
 interface PageLayoutProps {
   categories: Category[];
@@ -14,7 +15,8 @@ const PageLayout = ({ categories }: PageLayoutProps) => {
   const [content, setContent] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [requestFilter, setRequestFilter] = useState<{
-    value: string;
+    variant: FilterVariant;
+    value: string | boolean;
     label: string;
   } | null>();
 
@@ -23,7 +25,7 @@ const PageLayout = ({ categories }: PageLayoutProps) => {
   }, []);
 
   const handleRequestFilter = useCallback(
-    (filter: { value: string; label: string } | null) => {
+    (filter: {variant : FilterVariant , value: string; label: string } | null) => {
       setRequestFilter(filter);
     },
     [],
@@ -38,17 +40,17 @@ const PageLayout = ({ categories }: PageLayoutProps) => {
       <div className="bg-background md:flex md:flex-row">
         <div className="flex-grow max-w-xl mx-auto mb-3 md:mb-0 space-y-2">
           <SearchLine onRequest={handleRequest} onLoading={handleLoading} />
-          <CategoryFilter
-            categories={categories}
-            onSetFilter={handleRequestFilter}
-            onLoading={handleLoading}
-          />
+          <div className="flex flex-row space-x-2">
+            {/* probably more filters in future */}
+          <SearchFilter filtersList={formatCategoriesFilterList(categories)} filterLabel="category" filterVariant='category' onSetFilter={handleRequestFilter} />
+          </div>
         </div>
       </div>
-          <ContentBox
+            <ContentBox
             content={content}
             isLoading={isLoading}
             requestFilter={requestFilter}
+            categories={categories}
           />
     </section>
   );
