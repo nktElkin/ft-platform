@@ -2,16 +2,23 @@
 import { login } from "@/actions/auth";
 import React from "react";
 import { Button } from "./button";
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
 
 function LoginGithubHandler() {
-  try {
-    login("github");
-  } catch (error) {
-    console.log("githubBtn", error);
-  }
+  setTimeout(() => {
+    try {
+      login("github");
+    } catch (error) {
+      redirect('/global-error')
+    }
+  }, 5000);
 }
 
-const LoginGithubBtn = () => {
+const LoginGithubBtn = async () => {
+  const session = await auth();
+  if (session) redirect('/overview');
+
   return (
     <Button
       onClick={LoginGithubHandler}

@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { getSession, hasPersmissionToEdit } from "@/lib/utils";
+import { getSession, hasPermissionToEdit } from "@/lib/utils";
 import { NextResponse } from "next/server";
 
 export async function PATCH(req: Request,
@@ -11,7 +11,7 @@ export async function PATCH(req: Request,
         if (!values || !userId) return new NextResponse('No request', { status: 401 });
         const { session, currentUser } = await getSession();
         if (!session) return new NextResponse("Unauthorized", { status: 403 });
-        const hasPermissin = hasPersmissionToEdit(userId)
+        const hasPermissin = hasPermissionToEdit(userId)
         if (!hasPermissin)
             return new NextResponse("Permission denied", { status: 403 });
 

@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { courseId: string } },
+  { params }: { params: Promise<{ courseId: string }> },
 ) {
   try {
     const session = await auth();
@@ -19,9 +19,8 @@ export async function PATCH(
     if (user?.role === "STUDENT")
       return new NextResponse("Permission denied", { status: 403 });
 
-    const courseId = params.courseId;
+    const courseId = (await params)?.courseId;
 
-    // getting body values: tagetModule, draggedModule
     const values = await req.json();
 
     const targetModuleId = values.targetItem.id;
@@ -81,7 +80,7 @@ export async function PATCH(
     // updating dragged module index
     await db.courseModule.update({
       where: { id: draggedModuleId },
-      data: { index: targetModuleIndex },
+      data: { index: targetModuleIndex, updatedAt: new Date()},
     });
 
     //updating course updatedAt
@@ -103,7 +102,7 @@ export async function PATCH(
     });
     return NextResponse.json(response, { status: 201 });
   } catch (error) {
-    console.error("[REORDER-COURSE-MODULE]", error);
+    console.error("[REORDER-MODULE]", error);
     return new NextResponse("Failed to reorder course modules", {
       status: 500,
     });

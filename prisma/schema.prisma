@@ -1,6 +1,6 @@
 datasource db {
   provider = "mongodb"
-  url      = env("DATABASE_URL") // Moved the URL placeholder to a more secure .env standard practice
+  url      = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
@@ -24,11 +24,12 @@ model User {
   emailVerified DateTime?
   image         String?
   story         String? @default("")
+  role          UserRole?       @default(STUDENT)
+  courses     Course[]
 
   accounts      Account[]
-  sessions      Session[]
-  role          UserRole?       @default(STUDENT)
   // Optional for WebAuthn support
+  sessions      Session[]
   Authenticator Authenticator[]
  
   createdAt DateTime @default(now())
@@ -38,7 +39,6 @@ model User {
   parentUserId String?      @db.ObjectId
   parentUser   User?        @relation("Parent", fields: [parentUserId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   childUser   User[]       @relation("Parent")
-  courses     Course[]
 
 }
  

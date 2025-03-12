@@ -48,11 +48,12 @@ export const downloadFile = async (fileName: string) => {
   return url;
 };
 
-export const deleteObject = async (objectName: string) => {
+export const deleteFile = async (objectName: string) => {
   try {
     const bucket = storage.bucket(bucketName);
-    await bucket.file(objectName).delete();
-    console.log(`gs://${bucketName}/${objectName} deleted.`);
+    const response = await bucket.file(objectName).delete();
+    if(!response) return false;
+    // console.log(`gs://${bucketName}/${objectName} deleted.`);
     return true;
   } catch (error) {
     console.log("[LIB/GCS-DELETE]", error);

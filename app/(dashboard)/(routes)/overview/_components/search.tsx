@@ -24,10 +24,23 @@ const SearchLine = memo(function Searchline({
         method: "GET",
       });
       if (!response.ok) {
-        toast.error("Bad connection with server");
+        switch (response.status) {
+          case 400:
+            toast.error("Bad request");
+            break;
+          case 403:
+            toast.error("Unauthorized");
+            break;
+          case 404:
+            toast.error("Course not found");
+            break;
+          default:
+            toast.error("Failed to get courses");
+        }
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
+      if (!data.courses.length) toast.error("No courses found");
       onRequest(data);
     } catch (error) {
       toast.error("Bad connection with server");
@@ -58,7 +71,7 @@ const SearchLine = memo(function Searchline({
           className="bg-background"
           placeholder="All you need"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => setQuery(e.target.value.trim())}
           aria-label="Search"
         />
         <Button type="submit" aria-label="Submit search">

@@ -37,7 +37,7 @@ h2 {
 @layer base {
   :root {
     --background: #f6f8fa;
-    /* --foreground: #425466; */
+    --foreground: #333333;
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;

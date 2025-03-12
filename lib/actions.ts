@@ -22,19 +22,3 @@ export const UploadFileToGoogle = async (form: FormData) => {
   }
 };
 
-// export const uploadMakrdownToDB = async (isUpdated : boolean, courseId : string, moduleId : string, values : string) => {
-//     console.log('data input: ', values)
-//     try{
-//         if(isUpdated){
-//             const response = await fetch(`/api/courses/${courseId}/courseModules/${moduleId}`, { method: "POST", body: JSON.stringify(values) })
-//             return response;
-//         }else{
-//             const response = await fetch(`/api/courses/${courseId}/courseModules/${moduleId}`, { method: "PATCH", body: JSON.stringify(values) })
-//             return response.ok ? true : false;
-//         }
-//     }catch(e){
-//         console.log('[Makrdown upload error] ', e)
-//         return false;
-//     }
-//     return true;
-// }

@@ -6,7 +6,6 @@ import ContentBox from "../../overview/_components/content-box";
 import { FilterVariant, SearchFilter } from "./search-filter";
 
 interface TutorDataPageProps {
-    courses: Course[];
     categories: Category[];
 }
 
@@ -26,8 +25,9 @@ export const formatStatusFilterList = () => {
     return list;
 }
 
+// TODO: add button breate new course, add edit course button
 
-const TutorLayoutPage = ({ courses, categories }: TutorDataPageProps) => {
+const TutorOverviewPage = ({ categories }: TutorDataPageProps) => {
   const [content, setContent] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -73,4 +73,4 @@ const TutorLayoutPage = ({ courses, categories }: TutorDataPageProps) => {
     );
 }
  
-export default TutorLayoutPage;
+export default TutorOverviewPage;

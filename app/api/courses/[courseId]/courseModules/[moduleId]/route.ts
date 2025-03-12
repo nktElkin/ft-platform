@@ -1,11 +1,10 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/db";
-import exp from "constants";
 import { NextResponse } from "next/server";
 
 export async function DELETE(
   _req: Request,
-  { params }: { params: { courseId: string; moduleId: string } },
+  { params }: { params: Promise<{ courseId: string; moduleId: string }> },
 ) {
   try {
     const session = await auth();
@@ -20,8 +19,7 @@ export async function DELETE(
     if (user?.role === "STUDENT")
       return new NextResponse("Permission denied", { status: 403 });
 
-    const courseId = params.courseId;
-    const moduleId = params.moduleId;
+    const {courseId, moduleId} = await params
 
     const actionCourseModule = await db.courseModule.findFirst({
       where: {

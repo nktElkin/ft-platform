@@ -3,7 +3,7 @@ import EditDescriptionForm from "./edit-description-form";
 import EditTitleForm from "./edit-title-form";
 import UploadMediaForm from "./upload-courseMedia-form";
 
-interface CourseCreationFormProps {
+interface CourseEditingFormProps {
   initials: any;
   courseId: string;
   categories: { label: string; value: string }[];
@@ -11,13 +11,13 @@ interface CourseCreationFormProps {
   courseWallpaperIsValid?: boolean;
 }
 
-const CourseCreationForm = ({
+const CourseEditingForm = ({
   initials,
   courseId,
   categories,
   defaultCategory,
   courseWallpaperIsValid,
-}: CourseCreationFormProps) => {
+}: CourseEditingFormProps) => {
   return (
     <section
       className="flex flex-col w-full gap-6"
@@ -43,4 +43,4 @@ const CourseCreationForm = ({
   );
 };
 
-export default CourseCreationForm;
+export default CourseEditingForm;

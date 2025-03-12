@@ -1,12 +1,11 @@
 "use client";
-import { SquareUserRound } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 
 export const NavbarRoutes = () => {
   const pathname = usePathname();
   const router = useRouter();
-  const isStudyMode = pathname?.startsWith("/study");
+  const isStudyMode = pathname?.startsWith("/");
   // const isGuestMode = pathname?.startsWith("/");
   const isTutorMode = pathname?.startsWith("/tutor");
 

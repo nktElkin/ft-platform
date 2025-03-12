@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 import { CourseModule } from "@prisma/client";
 import { CircleArrowRight } from "lucide-react";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";

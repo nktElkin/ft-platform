@@ -114,19 +114,20 @@ function FiltersListUI({
   filterVariant: FilterVariant;
 }) {
   return (
-    <Command className="bg-background" defaultValue="">
-      <CommandInput placeholder={`Filter ${filterLabel}`} />
+    <Command className="bg-background">
+      <CommandInput placeholder={`Filter ${filterLabel}`}/>
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup>
           {filtersList.map((status: any) => (
             <CommandItem
-            key={status.value}
-            value={status.value}
-            onSelect={(value) => {
-              const selected = filtersList.find((filter) => filter.value === value) || null;
+            className="hover:underline"
+            key={status.label}
+            value={status.label}
+            onSelect={(label) => {
+              const selected = filtersList.find((filter) => filter.label === label) || null;
               setSelectedFilter(selected);
-              onSetFilter({variant: filterVariant, value: value, label: selected?.label || ''});
+              onSetFilter({variant: filterVariant, value: selected?.value.toString() || '', label: selected?.label || ''});
               setOpen(false);
             }}
           >

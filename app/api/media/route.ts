@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { getSession, hasPersmissionToEdit } from "@/lib/utils";
+import { getSession, hasPermissionToEdit } from "@/lib/utils";
 import { NextResponse } from "next/server";
 
 // export async function POST(
@@ -56,10 +56,10 @@ export async function POST(req: Request) {
       return new NextResponse("Bad request", { status: 400 });
     const { session, currentUser } = await getSession();
     if (!session) return new NextResponse("Unauthorized", { status: 403 });
-    const courseCreator = await db.course.findUnique({
+    const targetCourse = await db.course.findUnique({
       where: { id: courseId },
     });
-    const hasPermissin = hasPersmissionToEdit(courseCreator?.authorId || null);
+    const hasPermissin = hasPermissionToEdit(targetCourse?.authorId || null);
     if (!hasPermissin)
       return new NextResponse("Permission denied", { status: 403 });
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,9 +13,9 @@ import { useRouter } from "next/navigation";
 import InputCover from "@/components/ui/input-cover";
 
 const formSchema = z.object({
-  title: z.string().min(2, {
-    message: "Title must be at least 2 characters",
-  }),
+  title: z.string()
+    .min(2, {message: "Title must be at least 2 characters",})
+    .max(50, {message: "Title must be at most 50 characters"}),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -39,11 +39,9 @@ const EditTitleForm = ({ initials, courseId }: CourseCreationFormProps) => {
       title: initials?.title || "",
     },
   });
-  const { isSubmitting, isValid } = form.formState;
+  const { isSubmitting, isValid, isDirty } = form.formState;
 
   const onSubmit = async (values: FormValues) => {
-    values = { ...initials, ...values };
-    // console.log(values)
     try {
       const response = await fetch(`/api/courses/${courseId}`, {
         method: "PATCH",
@@ -57,12 +55,9 @@ const EditTitleForm = ({ initials, courseId }: CourseCreationFormProps) => {
             : `Failed to update course: ${error}`,
         );
       }
-      // const responseData = await response.json();
-      // console.log(responseData)
       toast.success("Successfully aplied");
     } catch (error) {
-      toast.error("Fild uattenpt");
-      // console.error(error)
+      toast.error("Fild attempt");
     }
     editMode();
     router.refresh();
@@ -94,6 +89,7 @@ const EditTitleForm = ({ initials, courseId }: CourseCreationFormProps) => {
                       disabled={isSubmitting}
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -105,7 +101,7 @@ const EditTitleForm = ({ initials, courseId }: CourseCreationFormProps) => {
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={!isValid || isSubmitting}>
+            <Button type="submit" disabled={!isDirty || !isValid || isSubmitting}>
               {isSubmitting ? "Loading..." : "Apply"}
             </Button>
             {/* <Button type="submit" disabled={!isValid || isSubmitting}>{isSubmitting ? "Bulishing" : `${initials.isPublished? 'To draft' : 'Publish now'}` }</Button> */}

@@ -45,7 +45,7 @@ const EditDescriptionForm = ({
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: FormValues) => {
-    values = { ...initials, ...values };
+    // values = { ...initials, ...values };
     try {
       const response = await fetch(`/api/courses/${courseId}`, {
         method: "PATCH",

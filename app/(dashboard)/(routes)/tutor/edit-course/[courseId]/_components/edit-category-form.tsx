@@ -48,7 +48,7 @@ const EditCategoryForm = ({
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: FormValues) => {
-    values = { ...initials, ...values };
+    // values = { ...initials, ...values };
     console.log(values);
     try {
       const response = await fetch(`/api/courses/${courseId}`, {

@@ -5,9 +5,8 @@
 {
   "plugins": ["@typescript-eslint"],
   "extends": [
-    "airbnb",
-    "plugin:@typescript-eslint/recommended",
     "next",
+    "plugin:@typescript-eslint/recommended",
     "next/core-web-vitals",
     "prettier"
   ],
@@ -21,3 +20,8 @@
     }
   ]
 }
+
+// "rules": {
+//   "no-console": "off", // Example rule to disable console statements
+//   "@typescript-eslint/no-explicit-any": "off" // Example rule to disable the use of 'any' type
+// }

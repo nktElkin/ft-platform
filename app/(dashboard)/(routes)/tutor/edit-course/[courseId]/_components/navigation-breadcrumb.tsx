@@ -25,7 +25,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ContactRound } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -61,7 +60,7 @@ const setItemsArray = (
   settings: string,
 ): [ItemInterface[], ItemInterface[]] => {
   const items: ItemInterface[] = [];
-  items.push({ href: "/", label: "Home" });
+  items.push({ href: "/", label: "Landing" });
   if (overview) items.push({ href: "/overview", label: "Overview" });
   if (course) items.push({ href: course, label: "Course" });
   if (module) items.push({ href: module, label: "Module" });

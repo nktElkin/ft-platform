@@ -2,41 +2,34 @@ import { auth } from "@/auth";
 // import { Progress } from "@/components/ui/progress";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
-import CourseCreationForm from "./_components/course-form";
-import { imageUrlIsValid } from "@/lib/utils";
+import CourseEditingForm from "./_components/course-form";
+import { hasPermissionToEdit, imageUrlIsValid } from "@/lib/utils";
 import PreviewCard from "@/components/ui/preview-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CourseModuleCreationForm from "./_components/courseModule-form";
 import DraggableTable from "./_components/draggable-table";
 import { PublishCourseForm } from "./_components/pusblish-course-form";
 
-// import { describe } from "node:test";
-
 const CourseIdPage = async ({
   params,
 }: {
   params: Promise<{ courseId: string }>;
 }) => {
-  const session = await auth();
-
   const id = (await params)?.courseId;
 
-  const currentUser = await db.user.findUnique({
-    where: { email: session?.user?.email || "" },
-  });
   const course = await db.course.findUnique({ where: { id } });
   const modules = await db.courseModule.findMany({
-    where: { courseId: id },
-    orderBy: { index: "asc" },
+    where: { courseId: id }, orderBy: { index: "asc" },
   });
-  if (!course || course?.authorId !== currentUser?.id) return redirect("/");
-  const courseWallpaperIsValid = await imageUrlIsValid(
-    course?.wallpaperUrl ? course?.wallpaperUrl : "",
-  );
-
+  
+  if (!course) redirect("/overview");
+  const canEdit = await hasPermissionToEdit(course?.authorId);
+  if (!canEdit) redirect("/overview");
+  
+  const courseWallpaper = await imageUrlIsValid(course?.wallpaperUrl);
+  
   const categories = await db.category.findMany();
-  const defaultCategory =
-    (await db.category.findUnique({ where: { id: course?.categoryId } })) || "";
+  const defaultCategory = categories.find((category) => category.id === course?.categoryId) || '';
 
   return (
     <>
@@ -56,7 +49,7 @@ const CourseIdPage = async ({
             <TabsTrigger value="mudule">Module</TabsTrigger>
           </TabsList>
           <TabsContent value="course">
-            <CourseCreationForm
+            <CourseEditingForm
               initials={course}
               courseId={course?.id}
               categories={categories.map((item) => ({
@@ -66,7 +59,7 @@ const CourseIdPage = async ({
               defaultCategory={
                 defaultCategory ? defaultCategory.categoryName : ""
               }
-              courseWallpaperIsValid={courseWallpaperIsValid}
+              courseWallpaperIsValid={courseWallpaper}
             />
           </TabsContent>
           <TabsContent value="mudule" className="flex flex-col w-full gap-6">

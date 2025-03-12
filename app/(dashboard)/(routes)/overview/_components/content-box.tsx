@@ -29,30 +29,28 @@ const ContentBox = memo(function ContentBox({
 }: ContentBoxProps) {
 
   const [courses, setCourses] = useState<Course[] | null>(content?.courses); 
-
+  
   useEffect(() => {
     if (requestFilter) {
       switch (requestFilter.variant) {
         case "category":
           setCourses(
             requestFilter.value !== ""
-              ? content?.courses.filter(
+            ? content?.courses?.filter(
                   (course: Course) => course.categoryId === requestFilter.value
                 )
-              : content?.courses
-          );
+                : content?.courses
+              );
+              break;
+              case "status":
+                setCourses(
+                  requestFilter.value !== ""
+                  ? content?.courses?.filter(
+                    (course: Course) => course.isPublished.toString() === requestFilter.value
+                  )
+                  : content?.courses
+                );
           break;
-        case "status":
-          setCourses(
-            requestFilter.value !== ""
-              ? content?.courses.filter(
-                  (course: Course) => course.isPublished.toString() === requestFilter.value
-                )
-              : content?.courses
-          );
-          break;
-        default:
-          setCourses(content?.courses);
       }
     } else {
       if (courses !== content?.courses) setCourses(content?.courses);
@@ -69,7 +67,7 @@ const ContentBox = memo(function ContentBox({
     );
   }
 
-  if (!courses && !isLoading) {
+  if (!courses?.length && !isLoading) {
     return (
       <div className="w-full flex flex-col items-center justify-around">
         <h1 className="text-lg text-zinc-500">No courses found</h1>

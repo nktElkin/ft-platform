@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 
 // login via provider success? -> redirect to welcome page
 export const login = async (provider: string) => {
-  await signIn(provider, { redirectTo: "/" });
+  await signIn(provider, { redirectTo: "/overview" });
   revalidatePath("/");
 };
 

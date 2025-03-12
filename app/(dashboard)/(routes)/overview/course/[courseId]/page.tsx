@@ -10,6 +10,7 @@ import CheckInCourseCard from "./_components/checkin-course-card";
 import { Course, CourseModule, User, UserProgress } from "@prisma/client";
 import NotFound from "@/app/not-found";
 import CompletedCourseCongratsCard from "./_components/completed-course-congrats-card";
+import Link from "next/link";
 
 export const revalidate = 60; // next will start revalidation process every 60 seconds
 
@@ -91,6 +92,12 @@ const CourseIdPage = async ({
 
   return (
     <Suspense fallback={<LoadingSkeleton />}>
+      {currentUser?.role !== "STUDENT" && 
+      <section className="my-4 py-2 w-full flex justify-around bg-repeat-x bg-white/25 bg-[url(https://img.freepik.com/free-vector/caution-colors-background_1095-46.jpg?t=st=1739350882~exp=1739354482~hmac=7f62354ec5ae7fd70799f4e583315d4c849953be4af7704284c6f3d7ffee1d89&w=826)]">
+      <div className="px-4 py-2 bg-white/80 font-semibold rounded-sm">
+      <span>ON TUTOR MODE, <Link href={`/tutor/edit-course/${course?.id}`}>click to edit</Link></span>
+      </div>
+      </section>}
       <div className="flex flex-col lg:flex lg:flex-row lg:space-x-5">
         {/* course information section */}
         <section

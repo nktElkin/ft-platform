@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { hasPersmissionToEdit} from "@/lib/utils";
+import { hasPermissionToEdit} from "@/lib/utils";
 import { redirect } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TextEditSection from "../../_components/text-edit-section";
@@ -41,7 +41,7 @@ const CourseModulePage = async ({
   });
 
   // check pesmission + protection
-  const hasPersmission = await hasPersmissionToEdit(
+  const hasPersmission = await hasPermissionToEdit(
     course ? course.authorId : null,
   );
   if (!course || !currentModule || !hasPersmission) return redirect("/");

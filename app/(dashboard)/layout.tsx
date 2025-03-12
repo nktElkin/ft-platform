@@ -5,23 +5,25 @@ import NavigationBreadcrumbs from "./(routes)/tutor/edit-course/[courseId]/_comp
 import type { Metadata } from "next";
 import { getSession } from "@/lib/utils";
 import { redirect } from "next/navigation";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "platform",
 };
 
 const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
-  const {session, currentUser} = await getSession();
+  const {session} = await getSession();
   if (!session) redirect('/login');
 
   return (
     <div className="h-full flex flex-col min-w-80">
       <Navbar />
-      <Sidebar />
-      <div className="h-full md:pl-48 *:wrapper" role="main">
+      <Sidebar /> 
+      <div className="h-full md:pl-48 *:wrapper" role="main"> 
         <NavigationBreadcrumbs />
       <main className="max-w-7xl mx-auto">
         {children}
+        <Toaster />
       </main>
       </div>
     </div>
@@ -29,3 +31,6 @@ const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
 };
 
 export default DashboardLayout;
+
+
+

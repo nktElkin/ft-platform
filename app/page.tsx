@@ -1,19 +1,6 @@
 import { GraduationCap, BookOpen, Users, ArrowRight} from 'lucide-react'
 import Link from 'next/link'
 
-export const metadata = {
-    title: 'Platform - Start Your Learning Journey Today',
-    description: 'Discover a world of knowledge with our comprehensive online courses. Learn at your own pace and advance your skills with expert-led content.',
-    keywords: ['online courses', 'e-learning', 'education platform', 'online education'],
-    openGraph: {
-        title: 'Platform - Start Your Learning Journey Today',
-        description: 'Transform your future with our expert-led online courses',
-        //TODO: add placeholder image
-        //TODO: add bg image for open graph
-        images: ['/api/placeholder/1200/630'],
-    },
-}
-
 export default function PublicLandingPage() {
     return (
         <main className="min-h-screen bg-gradient-to-br from-blue-200 to-background font-sans">
@@ -31,7 +18,7 @@ export default function PublicLandingPage() {
                         and join a community of lifelong learners.
                     </p>
                     <div className="mt-10">
-                        <Link href="/overview">
+                        <Link href="/login">
                                 <button className="px-8 py-4 text-lg font-semibold text-white bg-blue-600 rounded-full hover:bg-blue-700 hover:outline outline-offset-2 ring-offset-transparent outline-blue-700 transition-colors flex items-center gap-2 mx-auto" aria-label="Start Study">
                                 Start Study
                                 <ArrowRight className="w-5 h-5" aria-hidden="true" />

@@ -41,11 +41,11 @@ const UploadMediaForm = ({
 
   const dbWallpaperPatch = async (url: string, action?: "edit" | "delete") => {
     if (action === "delete") url = "";
-    const values = { ...initials, wallpaperUrl: url };
+    // const values = { ...initials, wallpaperUrl: url };
     try {
       const response = await fetch(`/api/courses/${courseId}`, {
         method: "PATCH",
-        body: JSON.stringify(values),
+        body: JSON.stringify({wallpaperUrl: url }),
       });
       if (!response.ok) {
         const error = await response.text();

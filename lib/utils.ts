@@ -30,7 +30,7 @@ export async function getSession() {
   return { session, currentUser };
 }
 
-export async function hasPersmissionToEdit(creatorId: string | null) {
+export async function hasPermissionToEdit(creatorId: string | null) : Promise<boolean> {
   const { currentUser } = await getSession();
   if (currentUser?.role === "ROOT") return true;
   if (currentUser?.role === "TUTOR" && currentUser?.id === creatorId)

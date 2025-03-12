@@ -1,11 +1,11 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import LoadingSpinner from "@/components/ui/loading-spinner";
-// import { uploadMakrdownToDB } from '@/lib/actions';
 import MDEditor from "@uiw/react-md-editor";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import rehypeSanitize from "rehype-sanitize";
+import { toast } from "sonner";
 
 interface TextEditSectionProps {
   time?: number;
@@ -27,13 +27,9 @@ const TextEditSection = ({
 
   const uploadContent = useCallback(async () => {
     if (value === lastSavedValue) return;
-
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      console.log(value);
-      // const response = await fetch(`/api/courses/${courseId}/courseModules/${moduleId}`, { method: "PATCH", body: JSON.stringify({moduleContent: value || ''})})
-      const response = await fetch(
-        `/api/courses/${courseId}/courseModules/${moduleId}`,
+      const response = await fetch(`/api/courses/${courseId}/courseModules/${moduleId}`,
         {
           method: "PATCH",
           headers: {
@@ -43,16 +39,21 @@ const TextEditSection = ({
         },
       );
       if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
-        throw new Error(
-          errorData?.error ||
-            `Server error: ${response.status} ${response.statusText}`,
-        );
+        switch (response.status) {
+          case 403:
+            throw new Error("Unauthorized: You do not have permission to edit this content.");
+            case 404:
+            throw new Error("Not Found: The course module could not be found.");
+          case 500:
+            throw new Error("Server error: Failed to update course module.");
+          default:
+            throw new Error("Unknown error: Failed to update course module.");
+          }
       }
       setLastSavedValue(value);
       router.refresh();
-    } catch (error) {
-      console.error("Upload failed:", error);
+    } catch (error : any) {
+      toast.error(error?.message);
     } finally {
       setIsLoading(false);
     }

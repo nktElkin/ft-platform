@@ -1,5 +1,4 @@
 import { auth } from "@/auth";
-import { request } from "http";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
@@ -10,7 +9,7 @@ import type { NextRequest } from "next/server";
 //     return NextResponse.next();
 // }
 
-const protectedRoutes = ["/tutor"]; //PROTECTED ROUTES
+const protectedRoutes = ["/overview, /tutor, /settings"]; //PROTECTED ROUTES
 
 export default async function middleware(request: NextRequest) {
   const session = await auth();
