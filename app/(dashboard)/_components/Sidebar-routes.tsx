@@ -1,6 +1,6 @@
 "use client";
 
-import {CirclePlus, LayoutDashboard, Settings, LucideProps } from "lucide-react";
+import {CirclePlus, LayoutDashboard, Settings, LucideProps, Database, UsersRound, Inbox, LayoutList, CloudCog} from "lucide-react";
 import { SidebarItem } from "./Sidebar-item";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense } from "react";
@@ -43,25 +43,36 @@ const TutorRoutes = [
     href: "/settings",
   },
 ];
+//TODO: Add more routes for ROOT user
 const RootRoutes = [
   {
-    icon: LayoutDashboard,
-    label: "Overview",
+    icon: Inbox,
+    label: "Inbox",
     href: "/overview",
   },
   {
-    icon: LayoutDashboard,
-    label: "My courses",
-    href: "/tutor",
+    icon: LayoutList,
+    label: "Tasks",
+    href: "/overview",
   },
   {
-    icon: CirclePlus,
-    label: "New course",
-    href: "/tutor/create-course",
+    icon: UsersRound ,
+    label: "Users",
+    href: "/overview",
+  },
+  {
+    icon: Database,
+    label: "Database",
+    href: "/overiview",
+  },
+  {
+    icon: CloudCog,
+    label: "GCS",
+    href: "/overiview",
   },
   {
     icon: Settings,
-    label: "Settings",
+    label: "My settings",
     href: "/settings",
   },
 ];
