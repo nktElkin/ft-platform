@@ -48,27 +48,27 @@ const RootRoutes = [
   {
     icon: Inbox,
     label: "Inbox",
-    href: "/overview",
+    href: "/inbox",
   },
   {
     icon: LayoutList,
     label: "Tasks",
-    href: "/overview",
+    href: "/tasks",
   },
   {
     icon: UsersRound ,
     label: "Users",
-    href: "/overview",
+    href: "/usersbd",
   },
   {
     icon: Database,
     label: "Database",
-    href: "/overiview",
+    href: "/db",
   },
   {
     icon: CloudCog,
     label: "GCS",
-    href: "/overiview",
+    href: "/gcs",
   },
   {
     icon: Settings,

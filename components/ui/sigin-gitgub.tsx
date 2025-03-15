@@ -1,6 +1,6 @@
 "use client";
 import { login } from "@/actions/auth";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "./button";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
@@ -16,6 +16,7 @@ function LoginGithubHandler() {
 }
 
 const LoginGithubBtn = async () => {
+
   const session = await auth();
   if (session) redirect('/overview');
 

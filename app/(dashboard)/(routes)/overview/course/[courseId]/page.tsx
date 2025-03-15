@@ -13,11 +13,7 @@ import CompletedCourseCongratsCard from "./_components/completed-course-congrats
 import Link from "next/link";
 
 export const revalidate = 60; // next will start revalidation process every 60 seconds
-
 export const dynamicParams = true; // if revalidation wont finished yet, next will render page on demand
-
-
-
 // generateStaticParams for dynamical routes
 export const generateStaticParams = async () => {
   const courses = await db.course.findMany({ select: { id: true } });

@@ -64,8 +64,9 @@ export function SelectBox({
                   key={listItem.value}
                   value={listItem.value}
                   onSelect={() => {
-                    onChange &&
+                    if (onChange) {
                       onChange(listItem.value === value ? "" : listItem.value);
+                    }
                     setOpen(false);
                   }}
                 >
